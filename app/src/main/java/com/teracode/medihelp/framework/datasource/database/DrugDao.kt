@@ -1,0 +1,13 @@
+package com.teracode.medihelp.framework.datasource.database
+
+const val DRUG_ORDER_ASC: String = ""
+const val DRUG_ORDER_DESC: String = "-"
+const val DRUG_FILTER_TITLE = "title"
+const val DRUG_FILTER_DATE_CREATED = "created_at"
+
+const val ORDER_BY_ASC_DATE_UPDATED = DRUG_ORDER_ASC + DRUG_FILTER_DATE_CREATED
+const val ORDER_BY_DESC_DATE_UPDATED = DRUG_ORDER_DESC + DRUG_FILTER_DATE_CREATED
+const val ORDER_BY_ASC_TITLE = DRUG_ORDER_ASC + DRUG_FILTER_TITLE
+const val ORDER_BY_DESC_TITLE = DRUG_ORDER_DESC + DRUG_FILTER_TITLE
+
+const val DRUG_PAGINATION_PAGE_SIZE = 30
