@@ -60,7 +60,6 @@ constructor(
 
     override suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int) {
 //        TODO("return correct search function")
-        val list:List<Drug>
     }
 
     override suspend fun searchDrugById(primaryKey: String) =
