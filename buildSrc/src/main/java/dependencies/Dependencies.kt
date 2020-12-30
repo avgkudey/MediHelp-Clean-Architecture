@@ -26,4 +26,17 @@ object Dependencies {
         "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines_play_services}"
 
 
+    const val room_runtime= "androidx.room:room-runtime:${Versions.room_version}"
+    const val room_ktx= "androidx.room:room-ktx:${Versions.room_version}"
+
+   const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit2}"
+    const val retrofit_gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit2}"
+
+
+
+    const val navigation_fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.nav_components}"
+    const val navigation_runtime = "androidx.navigation:navigation-runtime:${Versions.nav_components}"
+    const val navigation_ui = "androidx.navigation:navigation-ui-ktx:${Versions.nav_components}"
+    const val navigation_dynamic = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_components}"
+
 }

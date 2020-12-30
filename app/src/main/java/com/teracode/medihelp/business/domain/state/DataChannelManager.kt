@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.domain.state
 
+import com.teracode.medihelp.framework.presentation.druglist.state.DrugListViewState
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -54,7 +55,7 @@ abstract class DataChannelManager<ViewState> {
         }
     }
 
-    fun launchJob(
+    fun  launchJob(
         stateEvent: StateEvent,
         jobFunction: Flow<DataState<ViewState>?>
     ){
@@ -131,6 +132,10 @@ abstract class DataChannelManager<ViewState> {
         clearActiveStateEventCounter()
     }
 
+
+
+//    fun setToolbarState(state: DrugListViewState)
+//            = noteListInteractionManager.setToolbarState(state)
 }
 
 

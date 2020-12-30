@@ -8,9 +8,15 @@ interface DrugDaoService {
 
     suspend fun insertDrug(drug: Drug): Long
 
+    suspend fun insertDrugs(drugs: List<Drug>): LongArray
+
+    suspend fun searchDrugById(primaryKey: String): Drug?
+
     suspend fun deleteDrug(primaryKey: String): Int
 
     suspend fun deleteDrugs(drugs: List<Drug>): Int
+
+    suspend fun getAllDrugs(): List<Drug>
 
     suspend fun updateDrug(
         primaryKey: String,
@@ -35,17 +41,6 @@ interface DrugDaoService {
 
     suspend fun searchDrugs(): List<Drug>
 
-    suspend fun searchDrugsOrderByDateDESC(
-        query: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-    suspend fun searchDrugsOrderByDateASC(
-        query: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
 
     suspend fun searchDrugsOrderByTitleDESC(
         query: String,
@@ -53,18 +48,39 @@ interface DrugDaoService {
         pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
     ): List<Drug>
 
+
     suspend fun searchDrugsOrderByTitleASC(
         query: String,
         page: Int,
         pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
     ): List<Drug>
 
+    suspend fun searchDrugsWhereCategoryOrderByTitleASC(
+        categoryId: String,
+        page: Int,
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
+    ): List<Drug>
+    suspend fun searchDrugsWhereCategoryOrderByTitleDESC(
+        categoryId: String,
+        page: Int,
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
+    ): List<Drug>
 
-    suspend fun searchDrugById(primaryKey: String): Drug?
+    suspend fun searchDrugsWhereSubcategoryOrderByTitleASC(
+        subcategoryId: String,
+        page: Int,
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
+    ): List<Drug>
+
+    suspend fun searchDrugsWhereSubcategoryOrderByTitleDESC(
+        subcategoryId: String,
+        page: Int,
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
+    ): List<Drug>
+
 
     suspend fun getNumDrugs(): Int
 
-    suspend fun insertDrugs(drugs: List<Drug>): LongArray
 
     suspend fun returnOrderedQuery(
         query: String,

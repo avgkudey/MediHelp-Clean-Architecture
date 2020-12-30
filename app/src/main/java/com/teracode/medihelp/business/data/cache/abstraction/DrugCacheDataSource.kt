@@ -6,6 +6,8 @@ interface DrugCacheDataSource {
 
     suspend fun insertDrug(drug: Drug): Long
 
+    suspend fun insertDrugs(drugs: List<Drug>): LongArray
+
     suspend fun deleteDrug(primaryKey: String): Int
 
     suspend fun deleteDrugs(drugs: List<Drug>): Int
@@ -33,11 +35,12 @@ interface DrugCacheDataSource {
 
     suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int): List<Drug>
 
+    suspend fun getAllDrugs(): List<Drug>
+
     suspend fun searchDrugById(primaryKey: String): Drug?
 
     suspend fun getNumDrugs(): Int
 
-    suspend fun insertDrugs(drugs: List<Drug>): LongArray
 }
 
 

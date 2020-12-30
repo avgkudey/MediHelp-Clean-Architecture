@@ -7,11 +7,8 @@ import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
 @Singleton
-class DrugFactory
-@Inject
-constructor(
-    private val dateUtils: DateUtil
-) {
+class DrugFactory()
+ {
 
     fun createSingleDrug(
         id: String? = null,

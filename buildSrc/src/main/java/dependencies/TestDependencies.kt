@@ -8,6 +8,8 @@ object TestDependencies {
     const val jupiter_engine =
         "org.junit.jupiter:junit-jupiter-engine:${Versions.junit_jupiter_version}"
     const val junit4 = "junit:junit:${Versions.junit_4_version}"
-    const val  mockk = "io.mockk:mockk:${Versions.mockk_version}"
+    const val mockk = "io.mockk:mockk:${Versions.mockk_version}"
+
+    const val room_testing = "androidx.room:room-testing:${Versions.room_version}"
 
 }

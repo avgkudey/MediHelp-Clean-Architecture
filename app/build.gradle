@@ -14,8 +14,9 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
-
 android {
     compileSdkVersion Versions.compileSdk
     buildToolsVersion Versions.buildToolsVersion
@@ -69,14 +70,32 @@ dependencies {
     //  Hilt
     implementation Dependencies.hilt_android
 
+    // Navigation
+    implementation Dependencies.navigation_fragment
+    implementation Dependencies.navigation_runtime
+    implementation Dependencies.navigation_ui
+    implementation Dependencies.navigation_dynamic
+
     // Coroutine
     implementation Dependencies.kotlin_coroutines
     implementation Dependencies.kotlin_coroutines_android
     implementation Dependencies.kotlin_coroutines_play_services
 
 
+    // Room
+    implementation Dependencies.room_runtime
+    implementation Dependencies.room_ktx
+
+    // Retrofit2
+    implementation Dependencies.retrofit
+    implementation Dependencies.retrofit_gson
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     // Annotation processing
     kapt AnnotationProcessing.hilt_android_compiler
+    kapt AnnotationProcessing.room_compiler
+
 
 
     // Support Dependencies
@@ -90,6 +109,7 @@ dependencies {
     testImplementation TestDependencies.jupiter_api
     testImplementation TestDependencies.jupiter_params
     testImplementation TestDependencies.junit4
+    testImplementation TestDependencies.room_testing
     testRuntimeOnly TestDependencies.jupiter_engine
 
 }

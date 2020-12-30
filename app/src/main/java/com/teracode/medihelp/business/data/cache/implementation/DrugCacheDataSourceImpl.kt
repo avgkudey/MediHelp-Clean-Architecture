@@ -3,6 +3,7 @@ package com.teracode.medihelp.business.data.cache.implementation
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.framework.datasource.cache.abstraction.DrugDaoService
+import com.teracode.medihelp.util.printLogD
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,30 +38,39 @@ constructor(
         video: String?,
         category_id: String?,
         subcategory_id: String?
-    ) = drugDaoService.updateDrug(
-        primaryKey,
-        title,
-        trade_name,
-        pharmacological_name,
-        action,
-        antidote,
-        cautions,
-        contraindication,
-        dosages,
-        indications,
-        maximum_dose,
-        nursing_implications,
-        notes,
-        preparation,
-        side_effects,
-        video,
-        category_id,
-        subcategory_id
-    )
+    ): Int {
 
-    override suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int) {
-//        TODO("return correct search function")
+        printLogD("SyncDrugs:UPDATING", trade_name.toString())
+
+        return  drugDaoService.updateDrug(
+            primaryKey,
+            title,
+            trade_name,
+            pharmacological_name,
+            action,
+            antidote,
+            cautions,
+            contraindication,
+            dosages,
+            indications,
+            maximum_dose,
+            nursing_implications,
+            notes,
+            preparation,
+            side_effects,
+            video,
+            category_id,
+            subcategory_id
+        )
     }
+
+    override suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int): List<Drug> {
+
+        val lsit: List<Drug> = ArrayList()
+        return lsit
+    }
+
+    override suspend fun getAllDrugs(): List<Drug> = drugDaoService.getAllDrugs()
 
     override suspend fun searchDrugById(primaryKey: String) =
         drugDaoService.searchDrugById(primaryKey)
