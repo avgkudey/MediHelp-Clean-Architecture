@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.domain.state
 
+import android.util.Log
 import com.teracode.medihelp.framework.presentation.druglist.state.DrugListViewState
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.*
@@ -31,6 +32,8 @@ abstract class DataChannelManager<ViewState> {
             .asFlow()
             .onEach{ dataState ->
                 withContext(Main){
+
+                    Log.d("DrugListViewModel", "initChannel: ")
                     dataState.data?.let { data ->
                         handleNewData(data)
                     }
@@ -59,6 +62,7 @@ abstract class DataChannelManager<ViewState> {
         stateEvent: StateEvent,
         jobFunction: Flow<DataState<ViewState>?>
     ){
+        Log.d("DrugListViewModel", "launchJob: ")
         if(!isStateEventActive(stateEvent)){
             printLogD("DCM", "launching job: ${stateEvent.eventName()}")
             addStateEvent(stateEvent)

@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.interactors.splash
 
+import android.content.SharedPreferences
 import com.teracode.medihelp.business.data.cache.CacheResponseHandler
 import com.teracode.medihelp.business.data.cache.abstraction.SubcategoryCacheDataSource
 import com.teracode.medihelp.business.data.network.ApiResponseHandler
@@ -8,12 +9,14 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.DataState
+import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.SUBCATEGORY_LIST_SYNCED
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 class SyncSubcategories(
     private val cacheDataSource: SubcategoryCacheDataSource,
-    private val networkDataSource: SubcategoryNetworkDataSource
+    private val networkDataSource: SubcategoryNetworkDataSource,
+    private val editor: SharedPreferences.Editor
 ) {
 
     suspend fun syncSubcategories() {
@@ -58,9 +61,20 @@ class SyncSubcategories(
             }
 
 
+            for (cachedSubcategory in cachedSubcategories) {
+                networkDataSource.searchSubcategory(cachedSubcategory)
+                    ?: cacheDataSource.deleteSubcategory(
+                        cachedSubcategory.id
+                    )
+            }
+
+            setSynced(SUBCATEGORY_LIST_SYNCED, true)
         }
 
-    private suspend fun checkRequiresUpdate(cachedSubcategory: Subcategory, networkSubcategory: Subcategory) {
+    private suspend fun checkRequiresUpdate(
+        cachedSubcategory: Subcategory,
+        networkSubcategory: Subcategory
+    ) {
 
         if (networkSubcategory != cachedSubcategory) {
 
@@ -98,10 +112,14 @@ class SyncSubcategories(
                     stateEvent = null
                 )
             }
-
         }.getResult()
 
         return response?.data ?: ArrayList()
     }
 
+    private fun setSynced(key: String, value: Boolean) {
+
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
 }

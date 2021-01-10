@@ -2,6 +2,7 @@ package com.teracode.medihelp.framework.presentation.common
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import com.teracode.medihelp.framework.presentation.MainActivity
 import com.teracode.medihelp.framework.presentation.UIController
 import com.teracode.medihelp.util.TodoCallback
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.managers.ViewComponentManager
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -20,7 +23,7 @@ import java.lang.ClassCastException
 @ExperimentalCoroutinesApi
 abstract class BaseFragment
 constructor(
-    private @LayoutRes val layoutRes: Int
+    @LayoutRes private val layoutRes: Int
 ): Fragment() {
 
     lateinit var uiController: UIController
@@ -79,6 +82,13 @@ constructor(
         setUIController(null) // null in production
     }
 
+    private fun activityContext(): Context? {
+        val context = context
+        return if (context is ViewComponentManager.FragmentContextWrapper) {
+            context.baseContext
+        } else context
+    }
+
     fun setUIController(mockController: UIController?){
 
         // TEST: Set interface from mock
@@ -87,11 +97,13 @@ constructor(
         }
         else{ // PRODUCTION: if no mock, get from context
             activity?.let {
+                Log.d("DrugListViewModel", "setUIController: ")
                 if(it is MainActivity){
                     try{
-                        uiController = context as UIController
+                        uiController = activityContext() as UIController
                     }catch (e: ClassCastException){
                         e.printStackTrace()
+                        Log.d("DrugListViewModel", "setUIController: ${e.message}")
                     }
                 }
             }

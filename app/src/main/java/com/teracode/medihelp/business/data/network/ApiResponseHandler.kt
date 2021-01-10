@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.data.network
 
+import android.util.Log
 import com.teracode.medihelp.business.data.network.NetworkErrors.NETWORK_DATA_NULL
 import com.teracode.medihelp.business.data.network.NetworkErrors.NETWORK_ERROR
 import com.teracode.medihelp.business.domain.state.*
@@ -11,6 +12,7 @@ abstract class ApiResponseHandler <ViewState, Data>(
 ){
 
     suspend fun getResult(): DataState<ViewState>? {
+        Log.d("syncNetworkDru", "getResult: ${response}")
 
         return when(response){
 

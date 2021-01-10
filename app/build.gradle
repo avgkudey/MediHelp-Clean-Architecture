@@ -16,6 +16,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 android {
     compileSdkVersion Versions.compileSdk
@@ -66,9 +67,13 @@ dependencies {
     implementation Dependencies.firebase_auth
     implementation Dependencies.firebase_analytics
     implementation Dependencies.firebase_crashlytics
+    implementation Dependencies.firebase_in_app_messaging_display_ktx
+    implementation Dependencies.firebase_in_messaging
+    implementation Dependencies.firebase_config
 
     //  Hilt
     implementation Dependencies.hilt_android
+    implementation Dependencies.hilt_lifecycle_view_model
 
     // Navigation
     implementation Dependencies.navigation_fragment
@@ -89,13 +94,23 @@ dependencies {
     // Retrofit2
     implementation Dependencies.retrofit
     implementation Dependencies.retrofit_gson
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+
+    // Lottie
+    implementation Dependencies.lottie_android
+
+
+    // Material Dialogs
+    implementation Dependencies.material_dialogs_core
+    implementation Dependencies.material_dialogs_input
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
 
     // Annotation processing
     kapt AnnotationProcessing.hilt_android_compiler
+    kapt AnnotationProcessing.hilt_compiler
     kapt AnnotationProcessing.room_compiler
-
 
 
     // Support Dependencies

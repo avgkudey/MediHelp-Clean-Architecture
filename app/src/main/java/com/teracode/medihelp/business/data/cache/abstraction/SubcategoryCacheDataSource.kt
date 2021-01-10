@@ -1,6 +1,9 @@
 package com.teracode.medihelp.business.data.cache.abstraction
 
+import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.model.Subcategory
+import com.teracode.medihelp.framework.datasource.database.SUBCATEGORY_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.util.OrderEnum
 
 interface SubcategoryCacheDataSource {
 
@@ -27,7 +30,15 @@ interface SubcategoryCacheDataSource {
 
     suspend fun getAllSubcategories(): List<Subcategory>
 
-    suspend fun getNumSubcategories(): Int
+    suspend fun getNumSubcategories(categoryId: String?): Int
+
+    suspend fun searchSubcategories(
+        query: String,
+        categoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int = SUBCATEGORY_PAGINATION_PAGE_SIZE
+    ): List<Subcategory>
 
 }
 

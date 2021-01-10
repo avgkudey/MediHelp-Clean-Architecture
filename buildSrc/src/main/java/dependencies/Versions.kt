@@ -26,6 +26,7 @@ object Versions {
 
     //  Hilt
     const val hilt_android = "2.28-alpha"
+    const val hilt_lifecycle_view_model = "1.0.0-alpha01"
 
     //  Coroutine
     const val coroutines_version = "1.4.2"
@@ -41,4 +42,11 @@ object Versions {
     const val junit_jupiter_version = "5.6.0"
     const val junit_4_version = "4.13.1"
     const val mockk_version = "1.10.3-jdk8"
+
+
+    // Lottie
+    const val lottie_android = "3.6.0"
+
+    // Material Dialogs
+    const val material_dialogs="3.3.0"
 }

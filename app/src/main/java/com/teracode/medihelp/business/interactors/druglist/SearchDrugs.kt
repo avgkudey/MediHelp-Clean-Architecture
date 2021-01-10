@@ -1,11 +1,13 @@
-package com.teracode.medihelp.business.interactors.common
+package com.teracode.medihelp.business.interactors.druglist
 
 import com.teracode.medihelp.business.data.cache.CacheResponseHandler
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.state.*
+import com.teracode.medihelp.framework.datasource.database.DRUG_PAGINATION_PAGE_SIZE
 import com.teracode.medihelp.framework.presentation.druglist.state.DrugListViewState
+import com.teracode.medihelp.util.OrderEnum
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,8 +18,14 @@ class SearchDrugs(
 
     fun searchDrugs(
         query: String,
-        filterAndOrder: String,
+        categoryId: String? = null,
+        subcategoryId: String? = null,
+        filterAndOrder: OrderEnum,
         page: Int,
+
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE,
+
+
         stateEvent: StateEvent
     ): Flow<DataState<DrugListViewState>?> = flow {
 
@@ -29,10 +37,14 @@ class SearchDrugs(
         val cacheResult = safeCacheCall(IO) {
             drugCacheDataSource.searchDrugs(
                 query = query,
+                categoryId = categoryId,
+                subcategoryId = subcategoryId,
                 filterAndOrder = filterAndOrder,
-                page = updatedPageNum
+                page = updatedPageNum,
+                pageSize = pageSize
             )
         }
+
 
         val response = object : CacheResponseHandler<DrugListViewState, List<Drug>>(
             response = cacheResult,
@@ -41,7 +53,7 @@ class SearchDrugs(
             override suspend fun handleSuccess(resultObj: List<Drug>): DataState<DrugListViewState>? {
                 var message: String? = SEARCH_DRUGS_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()
-                if (resultObj.size == 0) {
+                if (resultObj.isEmpty()) {
                     message = SEARCH_DRUGS_NO_MATCHING_RESULTS
                     uiComponentType = UIComponentType.Toast()
                 }
@@ -62,6 +74,7 @@ class SearchDrugs(
 
         }.getResult()
 
+        emit(response)
 
     }
 

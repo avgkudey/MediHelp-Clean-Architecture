@@ -1,5 +1,6 @@
 package com.teracode.medihelp.framework.presentation.common
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.teracode.medihelp.business.data.util.GenericErrors
 import com.teracode.medihelp.business.domain.state.*
@@ -19,6 +20,7 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
         object : DataChannelManager<ViewState>() {
 
             override fun handleNewData(data: ViewState) {
+                Log.d("DrugListViewModel", "BaseViewModel.handleNewData: ")
                 this@BaseViewModel.handleNewData(data)
             }
         }

@@ -1,5 +1,6 @@
 package com.teracode.medihelp.framework.datasource.network.implementation
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Drug
@@ -37,7 +38,9 @@ constructor(
                 .addOnFailureListener {
                     cLog("${this::class.java} getAllCategories ${it.message}")
                 }
-
+                .addOnCompleteListener {
+                    Log.d("syncNetworkDru", "getAllCategories addOnCompleteListener: ${it.result}")
+                }
                 .await()
                 .toObjects(CategoryNetworkEntity::class.java)
         )

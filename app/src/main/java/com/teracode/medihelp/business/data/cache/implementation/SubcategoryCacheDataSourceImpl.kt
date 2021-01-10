@@ -3,6 +3,7 @@ package com.teracode.medihelp.business.data.cache.implementation
 import com.teracode.medihelp.business.data.cache.abstraction.SubcategoryCacheDataSource
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.framework.datasource.cache.abstraction.SubcategoryDaoService
+import com.teracode.medihelp.util.OrderEnum
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,6 +47,25 @@ constructor(
     override suspend fun getAllSubcategories() =
         daoService.getAllSubcategories()
 
-    override suspend fun getNumSubcategories() =
-        daoService.getNumSubcategories()
+    override suspend fun getNumSubcategories(categoryId: String?) =
+        daoService.getNumSubcategories(categoryId)
+
+
+    override suspend fun searchSubcategories(
+        query: String,
+        categoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int
+    ): List<Subcategory> {
+        return daoService.searchSubcategories(
+            query = query,
+            categoryId = categoryId,
+            filterAndOrder = filterAndOrder,
+            page = page,
+            pageSize = pageSize
+        )
+
+    }
+
 }

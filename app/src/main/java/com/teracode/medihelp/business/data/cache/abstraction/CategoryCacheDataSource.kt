@@ -25,9 +25,9 @@ interface CategoryCacheDataSource {
     ): Int
 
 
-    suspend fun getAllCategories(): List<Category>
-
     suspend fun getNumCategories(): Int
+
+    suspend fun getAllCategories(): List<Category>
 
 }
 

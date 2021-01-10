@@ -14,9 +14,17 @@ object Dependencies {
     const val firebase_crashlytics =
         "com.google.firebase:firebase-crashlytics-ktx"
 
+    const val firebase_config="com.google.firebase:firebase-config-ktx"
+
+    const val firebase_in_app_messaging_display_ktx="com.google.firebase:firebase-inappmessaging-display-ktx"
+    const val firebase_in_messaging="com.google.firebase:firebase-messaging-ktx"
+
 
     const val hilt_android =
         "com.google.dagger:hilt-android:${Versions.hilt_android}"
+
+    const val hilt_lifecycle_view_model =
+        "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hilt_lifecycle_view_model}"
 
     const val kotlin_coroutines =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines_version}"
@@ -35,8 +43,14 @@ object Dependencies {
 
 
     const val navigation_fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.nav_components}"
-    const val navigation_runtime = "androidx.navigation:navigation-runtime:${Versions.nav_components}"
     const val navigation_ui = "androidx.navigation:navigation-ui-ktx:${Versions.nav_components}"
+    const val navigation_runtime = "androidx.navigation:navigation-runtime:${Versions.nav_components}"
     const val navigation_dynamic = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.nav_components}"
 
+
+    const val lottie_android="com.airbnb.android:lottie:${Versions.lottie_android}"
+
+    // Material Dialog
+    const val material_dialogs_core="com.afollestad.material-dialogs:corecom.afollestad.material-dialogs:core:${Versions.material_dialogs}"
+    const val material_dialogs_input="com.afollestad.material-dialogs:input:${Versions.material_dialogs}"
 }

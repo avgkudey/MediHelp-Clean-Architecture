@@ -33,6 +33,12 @@ constructor(
         }
     }
 
+    override suspend fun searchCategoryByTitle(title: String): Category? {
+        return categoryDao.searchCategoryByTitle(title)?.let {
+            categoryMapper.mapFromEntity(it)
+        }
+    }
+
     override suspend fun deleteCategory(primaryKey: String): Int {
         return categoryDao.deleteCategory(primaryKey)
     }
@@ -42,11 +48,6 @@ constructor(
         return categoryDao.deleteCategories(ids)
     }
 
-    override suspend fun getAllCategories(): List<Category> {
-        return categoryMapper.entityListToCategoryList(
-            entities = categoryDao.getAllCategories()
-        )
-    }
 
     override suspend fun updateCategory(
         primaryKey: String,
@@ -68,17 +69,10 @@ constructor(
         return categoryDao.getNumCategories()
     }
 
-    override suspend fun returnOrderedQuery(
-        query: String,
-        filterAndOrder: String,
-        page: Int
-    ): List<Category> {
+    override suspend fun getAllCategories(): List<Category> {
         return categoryMapper.entityListToCategoryList(
-            categoryDao.returnOrderedQuery(
-                query = query,
-                filterAndOrder = filterAndOrder,
-                page = page
-            )
+            entities = categoryDao.getAllCategories()
         )
     }
+
 }

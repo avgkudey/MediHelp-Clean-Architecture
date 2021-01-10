@@ -11,22 +11,18 @@ import javax.inject.Inject
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class DrugFragmentFactory
-@Inject
-constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-) : FragmentFactory() {
+class DrugFragmentFactory : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String)=
 
         when (className) {
             DrugListFragment::class.java.name -> {
-                val fragment=DrugListFragment(viewModelFactory)
+                val fragment=DrugListFragment()
                 fragment
             }
 
             SplashFragment::class.java.name ->{
-                val fragment=SplashFragment(viewModelFactory)
+                val fragment=SplashFragment()
                 fragment
             }
 

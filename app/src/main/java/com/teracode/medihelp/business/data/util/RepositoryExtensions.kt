@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.data.util
 
+import android.util.Log
 import com.teracode.medihelp.business.data.cache.CacheConstants.CACHE_TIMEOUT
 import com.teracode.medihelp.business.data.cache.CacheErrors.CACHE_ERROR_TIMEOUT
 import com.teracode.medihelp.business.data.cache.CacheErrors.CACHE_ERROR_UNKNOWN
@@ -25,11 +26,13 @@ suspend fun <T> safeApiCall(
     return withContext(dispatcher) {
         try {
             // throws TimeoutCancellationException
-            withTimeout(NETWORK_TIMEOUT){
+            withTimeout(NETWORK_TIMEOUT) {
                 ApiResult.Success(apiCall.invoke())
+
             }
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
+            Log.d("syncNetworkDru", "ApiResult: ${throwable}")
             when (throwable) {
                 is TimeoutCancellationException -> {
                     val code = 408 // timeout error code
@@ -66,7 +69,7 @@ suspend fun <T> safeCacheCall(
     return withContext(dispatcher) {
         try {
             // throws TimeoutCancellationException
-            withTimeout(CACHE_TIMEOUT){
+            withTimeout(CACHE_TIMEOUT) {
                 CacheResult.Success(cacheCall.invoke())
             }
         } catch (throwable: Throwable) {

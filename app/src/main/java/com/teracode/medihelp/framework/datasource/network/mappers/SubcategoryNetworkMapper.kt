@@ -3,6 +3,7 @@ package com.teracode.medihelp.framework.datasource.network.mappers
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.util.EntityMapper
 import com.teracode.medihelp.framework.datasource.network.model.SubcategoryNetworkEntity
+import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import javax.inject.Singleton
 
 @Singleton
@@ -30,7 +31,7 @@ class SubcategoryNetworkMapper : EntityMapper<SubcategoryNetworkEntity, Subcateg
 
         return Subcategory(
             id = entity.id,
-            title = entity.title,
+            title = entity.title.capitalizeWords(),
             categoryId = entity.categoryId,
             image = entity.image,
             url = entity.url,
@@ -41,7 +42,7 @@ class SubcategoryNetworkMapper : EntityMapper<SubcategoryNetworkEntity, Subcateg
     override fun mapToEntity(domainModel: Subcategory): SubcategoryNetworkEntity {
         return SubcategoryNetworkEntity(
             id = domainModel.id,
-            title = domainModel.title,
+            title = domainModel.title.capitalizeWords(),
             categoryId = domainModel.categoryId,
             image = domainModel.image,
             url = domainModel.url,

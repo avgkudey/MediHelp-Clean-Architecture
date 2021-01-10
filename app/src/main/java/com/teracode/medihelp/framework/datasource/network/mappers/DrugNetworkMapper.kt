@@ -4,6 +4,7 @@ import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.util.EntityMapper
 import com.teracode.medihelp.framework.datasource.cache.model.DrugCacheEntity
 import com.teracode.medihelp.framework.datasource.network.model.DrugNetworkEntity
+import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import javax.inject.Singleton
 
 @Singleton
@@ -29,7 +30,7 @@ class DrugNetworkMapper:EntityMapper<DrugNetworkEntity, Drug> {
     override fun mapFromEntity(entity: DrugNetworkEntity): Drug {
         return Drug(
             id = entity.id,
-            title = entity.title,
+            title = entity.title.capitalizeWords(),
             trade_name = entity.trade_name,
             pharmacological_name = entity.pharmacological_name,
             action = entity.action,
@@ -52,7 +53,7 @@ class DrugNetworkMapper:EntityMapper<DrugNetworkEntity, Drug> {
     override fun mapToEntity(domainModel: Drug): DrugNetworkEntity {
         return DrugNetworkEntity(
             id = domainModel.id,
-            title = domainModel.title,
+            title = domainModel.title.capitalizeWords(),
             trade_name = domainModel.trade_name,
             pharmacological_name = domainModel.pharmacological_name,
             action = domainModel.action,

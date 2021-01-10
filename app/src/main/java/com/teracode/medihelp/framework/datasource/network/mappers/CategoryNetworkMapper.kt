@@ -6,6 +6,7 @@ import com.teracode.medihelp.business.domain.util.EntityMapper
 import com.teracode.medihelp.framework.datasource.cache.model.CategoryCacheEntity
 import com.teracode.medihelp.framework.datasource.cache.model.DrugCacheEntity
 import com.teracode.medihelp.framework.datasource.network.model.CategoryNetworkEntity
+import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import javax.inject.Singleton
 
 @Singleton
@@ -33,7 +34,7 @@ class CategoryNetworkMapper : EntityMapper<CategoryNetworkEntity, Category> {
 
         return Category(
             id = entity.id,
-            title = entity.title,
+            title = entity.title.capitalizeWords(),
             image = entity.image,
             url = entity.url,
             description = entity.description
@@ -43,7 +44,7 @@ class CategoryNetworkMapper : EntityMapper<CategoryNetworkEntity, Category> {
     override fun mapToEntity(domainModel: Category): CategoryNetworkEntity {
         return CategoryNetworkEntity(
             id = domainModel.id,
-            title = domainModel.title,
+            title = domainModel.title.capitalizeWords(),
             image = domainModel.image,
             url = domainModel.url,
             description = domainModel.description

@@ -4,6 +4,7 @@ import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.framework.datasource.cache.abstraction.SubcategoryDaoService
 import com.teracode.medihelp.framework.datasource.cache.mappers.SubcategoryCacheMapper
 import com.teracode.medihelp.framework.datasource.database.SubcategoryDao
+import com.teracode.medihelp.util.OrderEnum
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -66,7 +67,27 @@ constructor(
         )
     }
 
-    override suspend fun getNumSubcategories(): Int {
-        return dao.getNumSubcategories()
+    override suspend fun getNumSubcategories(categoryId: String?): Int {
+        return dao.getNumSubcategories(categoryId)
+    }
+
+
+    override suspend fun searchSubcategories(
+        query: String,
+        categoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int
+    ): List<Subcategory> {
+        return dao.returnOrderedQuery(
+            query = query,
+            categoryId = categoryId,
+            filterAndOrder = filterAndOrder,
+            page = page,
+            pageSize = pageSize
+        ).let { list ->
+            cacheMapper.entityListToSubcategoryList(list)
+        }
+
     }
 }

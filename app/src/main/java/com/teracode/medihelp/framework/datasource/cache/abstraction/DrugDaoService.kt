@@ -2,6 +2,7 @@ package com.teracode.medihelp.framework.datasource.cache.abstraction
 
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.framework.datasource.database.DRUG_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.util.OrderEnum
 
 interface DrugDaoService {
 
@@ -39,52 +40,19 @@ interface DrugDaoService {
         subcategory_id: String? = null
     ): Int
 
-    suspend fun searchDrugs(): List<Drug>
+
+    suspend fun getNumDrugs(
+        categoryId: String?,
+        subcategoryId: String?
+    ): Int
 
 
-    suspend fun searchDrugsOrderByTitleDESC(
+    suspend fun searchDrugs(
         query: String,
+        categoryId: String?,
+        subcategoryId: String?,
+        filterAndOrder: OrderEnum,
         page: Int,
         pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-
-    suspend fun searchDrugsOrderByTitleASC(
-        query: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-    suspend fun searchDrugsWhereCategoryOrderByTitleASC(
-        categoryId: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-    suspend fun searchDrugsWhereCategoryOrderByTitleDESC(
-        categoryId: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-    suspend fun searchDrugsWhereSubcategoryOrderByTitleASC(
-        subcategoryId: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-    suspend fun searchDrugsWhereSubcategoryOrderByTitleDESC(
-        subcategoryId: String,
-        page: Int,
-        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
-    ): List<Drug>
-
-
-    suspend fun getNumDrugs(): Int
-
-
-    suspend fun returnOrderedQuery(
-        query: String,
-        filterAndOrder: String,
-        page: Int
     ): List<Drug>
 }

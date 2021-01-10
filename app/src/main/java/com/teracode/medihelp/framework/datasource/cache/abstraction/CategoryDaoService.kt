@@ -12,6 +12,8 @@ interface CategoryDaoService {
 
     suspend fun searchCategoryById(primaryKey: String): Category?
 
+    suspend fun searchCategoryByTitle(title: String): Category?
+
     suspend fun deleteCategory(primaryKey: String): Int
 
     suspend fun deleteCategories(categories: List<Category>): Int
@@ -27,13 +29,6 @@ interface CategoryDaoService {
     ): Int
 
 
-
     suspend fun getNumCategories(): Int
 
-
-    suspend fun returnOrderedQuery(
-        query: String,
-        filterAndOrder: String,
-        page: Int
-    ): List<Category>
 }

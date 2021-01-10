@@ -1,6 +1,8 @@
 package com.teracode.medihelp.business.data.cache.abstraction
 
 import com.teracode.medihelp.business.domain.model.Drug
+import com.teracode.medihelp.framework.datasource.database.DRUG_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.util.OrderEnum
 
 interface DrugCacheDataSource {
 
@@ -33,14 +35,24 @@ interface DrugCacheDataSource {
         subcategory_id: String? = null
     ): Int
 
-    suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int): List<Drug>
 
     suspend fun getAllDrugs(): List<Drug>
 
     suspend fun searchDrugById(primaryKey: String): Drug?
 
-    suspend fun getNumDrugs(): Int
+    suspend fun getNumDrugs(
+        categoryId: String?,
+        subcategoryId: String?
+    ): Int
 
+    suspend fun searchDrugs(
+        query: String,
+        categoryId: String?,
+        subcategoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int = DRUG_PAGINATION_PAGE_SIZE
+    ): List<Drug>
 }
 
 

@@ -20,6 +20,20 @@ sealed class DrugListStateEvent : StateEvent {
     }
 
 
+    class GetNumDrugsInCacheEvent : DrugListStateEvent() {
+        override fun errorInfo(): String {
+            return "Error getting the number of drugs from the cache."
+        }
+
+        override fun eventName(): String {
+            return "GetNumDrugsInCacheEvent"
+        }
+
+        override fun shouldDisplayProgressBar() = true
+
+    }
+
+
     class CreateStateMessageEvent(
         val stateMessage: StateMessage
     ) : DrugListStateEvent() {

@@ -30,12 +30,6 @@ constructor(
         daoService.deleteCategories(categories)
 
 
-    override suspend fun getAllCategories() = daoService.getAllCategories()
-
-
-    override suspend fun getNumCategories() = daoService.getNumCategories()
-
-
     override suspend fun updateCategory(
         primaryKey: String,
         title: String,
@@ -49,5 +43,10 @@ constructor(
         url = url,
         description = description,
     )
+
+    override suspend fun getAllCategories() = daoService.getAllCategories()
+
+
+    override suspend fun getNumCategories() = daoService.getNumCategories()
 
 }

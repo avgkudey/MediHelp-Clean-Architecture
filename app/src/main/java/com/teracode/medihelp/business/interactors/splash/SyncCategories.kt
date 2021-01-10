@@ -1,5 +1,6 @@
 package com.teracode.medihelp.business.interactors.splash
 
+import android.content.SharedPreferences
 import com.teracode.medihelp.business.data.cache.CacheResponseHandler
 import com.teracode.medihelp.business.data.cache.abstraction.CategoryCacheDataSource
 import com.teracode.medihelp.business.data.network.ApiResponseHandler
@@ -8,12 +9,15 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.state.DataState
+import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.CATEGORY_LIST_SYNCED
+import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 class SyncCategories(
     private val cacheDataSource: CategoryCacheDataSource,
-    private val networkDataSource: CategoryNetworkDataSource
+    private val networkDataSource: CategoryNetworkDataSource,
+    private val editor: SharedPreferences.Editor
 ) {
 
     suspend fun syncCategories() {
@@ -28,7 +32,7 @@ class SyncCategories(
             val networkResult = safeApiCall(IO) {
                 networkDataSource.getAllCategories()
             }
-
+            printLogD("printLogD", "category Sync Started")
             val response = object : ApiResponseHandler<List<Category>, List<Category>>(
                 response = networkResult,
                 stateEvent = null
@@ -54,10 +58,16 @@ class SyncCategories(
 
                 } ?: cacheDataSource.insertCategory(category)
 
-
+                for (cachedCategory in cachedCategories) {
+                    networkDataSource.searchCategory(cachedCategory)
+                        ?: cacheDataSource.deleteCategory(
+                            cachedCategory.id
+                        )
+                }
             }
 
 
+            setSynced(CATEGORY_LIST_SYNCED, true)
         }
 
     private suspend fun checkRequiresUpdate(cachedCategory: Category, networkCategory: Category) {
@@ -103,4 +113,10 @@ class SyncCategories(
         return response?.data ?: ArrayList()
     }
 
+
+    private fun setSynced(key: String, value: Boolean) {
+
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
 }

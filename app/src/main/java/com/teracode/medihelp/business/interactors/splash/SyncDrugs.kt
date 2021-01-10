@@ -1,5 +1,7 @@
 package com.teracode.medihelp.business.interactors.splash
 
+import android.content.SharedPreferences
+import android.util.Log
 import com.teracode.medihelp.business.data.cache.CacheResponseHandler
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.data.network.ApiResponseHandler
@@ -8,19 +10,21 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.state.DataState
+import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.DRUG_LIST_SYNCED
+import com.teracode.medihelp.util.cLog
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 class SyncDrugs(
     private val drugCacheDataSource: DrugCacheDataSource,
-    private val drugNetworkDataSource: DrugNetworkDataSource
+    private val drugNetworkDataSource: DrugNetworkDataSource,
+    private val editor: SharedPreferences.Editor
 ) {
 
+    private var exception: Exception? = null
     suspend fun syncDrugs() {
         val cachedDrugsList = getCachedDrugList()
-
-
         syncNetworkDrugsWithCachedDrugs(ArrayList(cachedDrugsList))
     }
 
@@ -29,6 +33,7 @@ class SyncDrugs(
             val networkResult = safeApiCall(IO) {
                 drugNetworkDataSource.getAllDrugs()
             }
+
 
             val response = object : ApiResponseHandler<List<Drug>, List<Drug>>(
                 response = networkResult,
@@ -45,9 +50,9 @@ class SyncDrugs(
 
             }.getResult()
 
+
             val networkDrugList = response?.data ?: ArrayList()
 
-            printLogD("SyncDrugs:NETWORK", response?.data.toString())
             for (drug in networkDrugList) {
                 drugCacheDataSource.searchDrugById(drug.id)?.let { cachedDrug ->
 
@@ -62,8 +67,7 @@ class SyncDrugs(
                     cachedDrug.id
                 )
             }
-
-
+            setSynced(DRUG_LIST_SYNCED, true)
         }
 
     private suspend fun checkRequiresUpdate(cachedDrug: Drug, networkDrug: Drug) {
@@ -118,10 +122,16 @@ class SyncDrugs(
             }
 
         }.getResult()
-
-        printLogD("SyncDrugs:CACHED", response?.data.toString())
-
         return response?.data ?: ArrayList()
+    }
+
+
+    private fun setSynced(key: String, value: Boolean) {
+
+        if (exception == null) {
+            editor.putBoolean(key, value)
+            editor.apply()
+        }
     }
 
 }

@@ -3,6 +3,8 @@ package com.teracode.medihelp.framework.datasource.cache.abstraction
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.framework.datasource.database.DRUG_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.framework.datasource.database.SUBCATEGORY_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.util.OrderEnum
 
 interface SubcategoryDaoService {
     suspend fun insertSubcategory(subcategory: Subcategory): Long
@@ -28,6 +30,15 @@ interface SubcategoryDaoService {
 
     suspend fun getAllSubcategories(): List<Subcategory>
 
-    suspend fun getNumSubcategories(): Int
+    suspend fun getNumSubcategories(categoryId: String?): Int
+
+
+    suspend fun searchSubcategories(
+        query: String,
+        categoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int = SUBCATEGORY_PAGINATION_PAGE_SIZE
+    ): List<Subcategory>
 
 }
