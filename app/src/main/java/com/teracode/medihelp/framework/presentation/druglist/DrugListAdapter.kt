@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.framework.presentation.common.capitalizeWords
+import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.invisible
 import kotlinx.android.synthetic.main.drug_list_item.view.*
 
@@ -55,6 +56,7 @@ class DrugListAdapter(
         }
     }
 
+
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
@@ -81,7 +83,9 @@ class DrugListAdapter(
 
             drug = item
 
-            setTextValue(drug_item_title, "${item.title} ${item.category_id}")
+            setTextValue(drug_item_title, item.title)
+            setTradeName(item.trade_name, drug_list_item_trade_name)
+
         }
 
         private fun setTextValue(textView: TextView?, value: String?) {
@@ -92,6 +96,24 @@ class DrugListAdapter(
                 }
                 tView.text = value?.capitalizeWords()
             }
+        }
+
+        private fun setTradeName(tradeName: String?, textView: TextView) {
+            textView.gone()
+            if (tradeName == null) {
+                textView.gone()
+                return
+            }
+//
+//            val trade_text_arr = tradeName.split("~")
+//
+//            for (tn in trade_text_arr) {
+//                var exValue = textView.text.toString()
+//                var newVal = exValue + "\n" + tn
+//                setTextValue(textView, newVal)
+//            }
+
+
         }
 
     }

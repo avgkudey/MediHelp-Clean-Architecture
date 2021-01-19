@@ -1,9 +1,9 @@
 package com.teracode.medihelp.business.interactors.subcategories
 
-import com.teracode.medihelp.business.interactors.common.GetNumSubcategories
+import com.teracode.medihelp.business.interactors.common.GetNumDrugSubcategories
 
 class SubcategoryInteractors(
-    getNumSubcategories: GetNumSubcategories,
-    searchSubcategories: SearchSubcategories
+  val getNumSubcategories: GetNumDrugSubcategories,
+  val searchSubcategories: SearchSubcategories
 ) {
 }

@@ -7,6 +7,8 @@ buildscript {
     repositories {
         google()
         jcenter()
+
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath Build.build_tools
@@ -27,6 +29,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 

@@ -7,8 +7,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
+import com.teracode.medihelp.framework.presentation.common.gone
+import com.teracode.medihelp.framework.presentation.common.invisible
 import kotlinx.android.synthetic.main.category_list_item.view.*
 import java.util.ArrayList
 
@@ -58,7 +61,7 @@ class DrugCategoryAdapter(
             itemInteraction?.restoreListPosition()
         }
 
-        differ.submitList(categoryList,commitCallback)
+        differ.submitList(categoryList, commitCallback)
 
     }
 
@@ -81,8 +84,38 @@ class DrugCategoryAdapter(
                 true
             }
 
-            category=item
+            category = item
             category_item_title.text = category.title
+
+//            category_list_item_description.text = category.description
+
+
+            if (category.subcategoryCount > 0) {
+                category_list_item_sub_count.text =
+                    "${context.getText(R.string.subcategories_text)}${category.subcategoryCount}"
+            } else {
+                category_list_item_sub_count.gone()
+            }
+
+            if (category.drugCount > 0) {
+                category_list_item_drug_count.text =
+                    "${context.getString(R.string.drug_items_text)}${category.drugCount}"
+
+
+            } else {
+                category_list_item_drug_count.text =
+                    context.getString(R.string.drug_items_not_found)
+            }
+            category_list_item_description.text =
+                category.description?.substring(0, 70) + context.getString(R.string.etc_text)
+
+
+//           category.image?.let {
+               Glide.with(itemView.context).load("https://firebase.google.com/images/social.png").into(category_item_image)
+//           }
+
+
+            category_list_item_view_more_btn.gone()
         }
 
     }

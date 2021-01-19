@@ -22,6 +22,8 @@ interface CategoryCacheDataSource {
         image: String? = null,
         url: String? = null,
         description: String? = null,
+        subcategoryCount: Int = 0,
+        drugsCount: Int = 0,
     ): Int
 
 

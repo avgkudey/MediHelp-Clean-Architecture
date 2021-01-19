@@ -3,7 +3,6 @@ package dependencies
 object Versions {
 
 
-
     const val retrofit2 = "2.9.0"
     const val compileSdk = 30
     const val minSdk = 21
@@ -49,4 +48,11 @@ object Versions {
 
     // Material Dialogs
     const val material_dialogs="3.3.0"
+
+    //LeakCanary
+
+    const val leak_canary="2.6"
+
+    // Glide
+    const val glide="4.11.0"
 }

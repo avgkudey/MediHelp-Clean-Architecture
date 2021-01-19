@@ -36,7 +36,9 @@ class CategoryCacheMapper : EntityMapper<CategoryCacheEntity, Category> {
             title = entity.title.capitalizeWords(),
             image = entity.image,
             url = entity.url,
-            description = entity.description
+            description = entity.description,
+            drugCount = entity.drugCount,
+            subcategoryCount = entity.subcategoryCount,
         )
     }
 
@@ -46,7 +48,9 @@ class CategoryCacheMapper : EntityMapper<CategoryCacheEntity, Category> {
             title = domainModel.title.capitalizeWords(),
             image = domainModel.image,
             url = domainModel.url,
-            description = domainModel.description
+            description = domainModel.description,
+            drugCount = domainModel.drugCount,
+            subcategoryCount = domainModel.subcategoryCount,
         )
 
     }

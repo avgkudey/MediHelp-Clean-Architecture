@@ -7,13 +7,17 @@ import com.teracode.medihelp.business.data.cache.abstraction.SubcategoryCacheDat
 import com.teracode.medihelp.business.data.network.abstraction.CategoryNetworkDataSource
 import com.teracode.medihelp.business.data.network.abstraction.DrugNetworkDataSource
 import com.teracode.medihelp.business.data.network.abstraction.SubcategoryNetworkDataSource
+import com.teracode.medihelp.business.interactors.common.GetNumDrugSubcategories
 import com.teracode.medihelp.business.interactors.druglist.SearchDrugs
 import com.teracode.medihelp.business.interactors.drugcategory.DrugCategoryInteractors
 import com.teracode.medihelp.business.interactors.drugcategory.GetCategories
 import com.teracode.medihelp.business.interactors.common.GetNumSubcategories
+import com.teracode.medihelp.business.interactors.drugdetail.DrugDetailInteractors
+import com.teracode.medihelp.business.interactors.drugdetail.GetDrug
 import com.teracode.medihelp.business.interactors.druglist.DrugListInteractors
 import com.teracode.medihelp.business.interactors.druglist.GetNumDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncCategories
+import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncSubcategories
 import com.teracode.medihelp.business.interactors.subcategories.SearchSubcategories
@@ -39,6 +43,15 @@ object InteractorModule {
 
         )
     }
+    @Singleton
+    @Provides
+    fun provideDrugDetailInteractors(
+        drugCacheDataSource: DrugCacheDataSource,
+    ): DrugDetailInteractors {
+        return DrugDetailInteractors(
+            getDrug = GetDrug(drugCacheDataSource = drugCacheDataSource),
+        )
+    }
 
     @Singleton
     @Provides
@@ -57,7 +70,7 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideSubcategoryInteractors(
-        getNumSubcategories: GetNumSubcategories,
+        getNumSubcategories: GetNumDrugSubcategories,
         searchSubcategories: SearchSubcategories
     ): SubcategoryInteractors {
         return SubcategoryInteractors(
@@ -77,6 +90,20 @@ object InteractorModule {
             drugCacheDataSource = drugCacheDataSource,
             drugNetworkDataSource = drugNetworkDataSource,
             editor = editor
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSyncCounts(
+        drugCacheDataSource: DrugCacheDataSource,
+        categoryCacheDataSource: CategoryCacheDataSource,
+        subcategoryCacheDataSource: SubcategoryCacheDataSource
+    ): SyncCounts {
+        return SyncCounts(
+            drugCacheDataSource = drugCacheDataSource,
+            categoryCacheDataSource = categoryCacheDataSource,
+            subcategoryCacheDataSource = subcategoryCacheDataSource,
         )
     }
 
@@ -121,6 +148,16 @@ object InteractorModule {
 
     @Singleton
     @Provides
+    fun provideGetDrug(
+        drugCacheDataSource: DrugCacheDataSource,
+    ): GetDrug {
+        return GetDrug(
+            drugCacheDataSource = drugCacheDataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideGetNumDrugs(
         drugCacheDataSource: DrugCacheDataSource,
     ): GetNumDrugs {
@@ -135,6 +172,16 @@ object InteractorModule {
         subcategoryCacheDataSource: SubcategoryCacheDataSource
     ): GetNumSubcategories {
         return GetNumSubcategories(
+            subcategoryCacheDataSource = subcategoryCacheDataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetNumDrugSubcategories(
+        subcategoryCacheDataSource: SubcategoryCacheDataSource
+    ): GetNumDrugSubcategories {
+        return GetNumDrugSubcategories(
             subcategoryCacheDataSource = subcategoryCacheDataSource,
         )
     }

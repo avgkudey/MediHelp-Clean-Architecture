@@ -19,11 +19,11 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object FirebaseModule {
 
-    @Singleton
-    @Provides
-    fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
-    }
+//    @Singleton
+//    @Provides
+//    fun provideFirebaseAuth(): FirebaseAuth {
+//        return FirebaseAuth.getInstance()
+//    }
 
     @Singleton
     @Provides
@@ -47,7 +47,8 @@ object FirebaseModule {
         val firestore = FirebaseFirestore.getInstance()
 
         val settings = firestoreSettings {
-            isPersistenceEnabled = false
+            isPersistenceEnabled = true
+            cacheSizeBytes=50000000
         }
         firestore.firestoreSettings = settings
 

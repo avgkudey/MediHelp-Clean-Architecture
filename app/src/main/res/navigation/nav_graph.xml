@@ -11,15 +11,6 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_drugListFragment"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/splashFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_down"
-            app:destination="@id/drugListFragment" />
-        <action
             app:popUpToInclusive="true"
             app:popUpTo="@id/splashFragment"
             app:enterAnim="@anim/slide_up"
@@ -34,6 +25,9 @@
         android:name="com.teracode.medihelp.framework.presentation.druglist.DrugListFragment"
         android:label="fragment_drug_list"
         tools:layout="@layout/fragment_drug_list">
+        <action
+            android:id="@+id/action_drugListFragment_to_drugDetailFragment"
+            app:destination="@id/drugDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/drugCategoryFragment"
@@ -41,12 +35,29 @@
         android:label="fragment_drug_category"
         tools:layout="@layout/fragment_drug_category" >
         <action
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_down"
-
+            android:id="@+id/action_drugCategoryFragment_to_subcategoryFragment"
+            app:destination="@id/subcategoryFragment" />
+        <action
             android:id="@+id/action_drugCategoryFragment_to_drugListFragment"
             app:destination="@id/drugListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subcategoryFragment"
+        android:name="com.teracode.medihelp.framework.presentation.subcategorylist.SubcategoryFragment"
+        android:label="fragment_subcategory"
+        tools:layout="@layout/fragment_subcategory" >
+        <action
+            android:id="@+id/action_subcategoryFragment_to_drugListFragment"
+            app:destination="@id/drugListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drugDetailFragment"
+        android:name="com.teracode.medihelp.framework.presentation.drugdetail.DrugDetailFragment"
+        android:label="fragment_drug_detail"
+        tools:layout="@layout/fragment_drug_detail" >
+        <argument
+            android:name="drugId"
+            app:argType="string"
+            android:defaultValue='""' />
     </fragment>
 </navigation>

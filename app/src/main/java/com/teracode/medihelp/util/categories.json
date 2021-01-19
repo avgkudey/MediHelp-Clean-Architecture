@@ -1,0 +1,106 @@
+[
+  {
+    "description": "A vaccine is a biological preparation that provides active acquired immunity to a particular disease. A vaccine typically contains an agent that resembles a disease-causing microorganism and is often made from weakened or killed forms of the microbe, its toxins, or one of its surface proteins",
+    "image": "http://4.bp.blogspot.com/_Uf5f7SzC8gE/TREI4fsNvCI/AAAAAAAABWU/ELaBjKJ3FDE/s1600/vacin.jpg",
+    "url": "https://en.wikipedia.org/wiki/Vaccine",
+    "title": "Vaccines",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "An anesthetic (or anaesthetic) is a drug to prevent pain during surgery, completely blocking any feeling as opposed to an analgesic. A wide variety of drugs are used in modern anesthetic practice. Many are rarely used outside anesthesia, although others are used commonly by all disciplines.",
+    "image": "https://magazine.practicegreenhealth.org/wp-content/uploads/Screen-Shot-2013-06-12-at-5.28.06-PM-300x271.png",
+    "url": "https://en.wikipedia.org/wiki/Anesthetic",
+    "title": "Anesthetic",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "4xfTquUPYn5CWbOO8qjA",
+    "description": "The urinary system, also known as the renal system or urinary tract, consists of the kidneys, ureters, bladder, and the urethra. The purpose of the urinary system is to eliminate waste from the body, regulate blood volume and blood pressure, control levels of electrolytes and metabolites, and regulate blood pH",
+    "image": "https://www.merckmanuals.com/Content/Images/no-copy.png",
+    "url": "https://en.wikibooks.org/wiki/Human_Physiology/The_Urinary_System",
+    "title": "antibiotics",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "6NippSeBueteQNViMsxo",
+    "description": "The circulatory system, also called the cardiovascular system or the vascular system, is an organ system that permits blood to circulate and transport nutrients (such as amino acids and electrolytes), oxygen, carbon dioxide, hormones, and blood cells to and from the cells in the body to provide nourishment and help in fighting diseases, stabilize temperature and pH, and maintain homeostasis.",
+    "image": "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_and_medical_reference/heart_and_blood_vessels/heart_disease_diseases_affect_heart_cardiovascular_system2.jpg",
+    "url": "https://en.wikipedia.org/wiki/Circulatory_system",
+    "title": "Cardiovascular System",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "208htWEWn3p64zGXPREf",
+    "description": "Chemotherapy is the use of any drug to treat any disease. But to most people, the word chemotherapy means drugs used for cancer treatment. It's often shortened to “chemo.” Surgery and radiation therapy remove, kill, or damage cancer cells in a certain area, but chemo can work throughout the whole body.",
+    "image": "https://www.drugs.com/health-guide/images/205434.jpg",
+    "url": "https://en.wikipedia.org/wiki/Chemotherapy",
+    "title": "Chemotherapy",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "The GI tract is a series of hollow organs joined in a long, twisting tube from the mouth to the anus. The hollow organs that make up the GI tract are the mouth, esophagus, stomach, small intestine, large intestine, and anus. The liver, pancreas, and gallbladder are the solid organs of the digestive system.",
+    "image": "https://www.ncbi.nlm.nih.gov/projects/pmh/PMH_Authoring/media/Images/medium_thumbs/CDR0000415499.jpg",
+    "url": "https://en.wikipedia.org/wiki/Gastrointestinal_tract",
+    "title": "GI Tract",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "5pRmhVkrZ4ufBBUR7KuA",
+    "description": "Gynaecology normally means treating women who aren’t pregnant, while obstetrics deals with pregnant women and their unborn children, but there is lots of crossover between the two. For example, women may be referred to gynaecologists in the earlier stages of pregnancy, and obstetricians later in their term.",
+    "image": "https://bangladeshbusinessdir.com/wp-content/uploads/2015/08/Obs-and-Gynae-Doctors3.jpg",
+    "url": "https://en.wikipedia.org/wiki/Obstetrics_and_gynaecology",
+    "title": "Drugs used in Gyn and Obs",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "A hormone (from the Greek  to set in motion, urge on) is any member of a class of signaling molecules produced by glands in multicellular organisms that are transported by the circulatory system to target distant organs to regulate physiology and behaviour.",
+    "image": "https://thefourthrevolution.org/wordpress/wp-content/uploads/2013/04/hormone-brain.jpg",
+    "url": "https://en.wikipedia.org/wiki/Hormone_therapy",
+    "title": "Hormone Therapy",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "The central nervous system (CNS) is the part of the nervous system consisting of the brain and spinal cord.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/1201_Overview_of_Nervous_System.jpg/800px-1201_Overview_of_Nervous_System.jpg",
+    "url": "https://en.wikipedia.org/wiki/Central_nervous_system",
+    "title": "Central Nervous System",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "A variety of different preservatives have been used in ophthalmic preparations. The repetitious use of ophthalmic medicines, which is often necessary to treat diseases such as glaucoma and dry eye syndrome, has been linked to irritation, dryness and surface epithelial cell loss, among other unwanted side effects.",
+    "image": "https://www.integralbiosystems.com/images/eye.jpg",
+    "url": "https://en.wikipedia.org/wiki/Ophthalmology",
+    "title": "Ophthalmic Medication",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "2eNHsQgQhFoVWyanwCUp",
+    "description": "psychiatric disorder, is a behavioral or mental pattern that causes significant distress or impairment of personal functioning.Such features may be persistent, relapsing and remitting, or occur as a single episode. Many disorders have been described, with signs and symptoms that vary widely between specific disorders.Such disorders may be diagnosed by a mental health professional. ",
+    "url": "https://en.wikipedia.org/wiki/Mental_disorder",
+    "title": "Psychiatric Drugs",
+    "video": "ll"
+  },
+  {
+    "id": "2yrAO6faHuWe0xEUibA7",
+    "description": "The human respiratory system is a series of organs responsible for taking in oxygen and expelling carbon dioxide. The primary organs of the respiratory system are lungs, which carry out this exchange of gases as we breathe",
+    "image": "https://www.profaw.co.uk/wiki/wp-content/uploads/2018/01/shutterstock_638539312-300x300.jpg",
+    "url": "https://en.wikipedia.org/wiki/Respiratory_system",
+    "title": "Respiratory System",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "id": "940orp84KbctkJz1vHT3",
+    "description": "The urinary system, also known as the renal system or urinary tract, consists of the kidneys, ureters, bladder, and the urethra. The purpose of the urinary system is to eliminate waste from the body, regulate blood volume and blood pressure, control levels of electrolytes and metabolites, and regulate blood pH",
+    "image": "https://www.merckmanuals.com/Content/Images/no-copy.png",
+    "url": "https://en.wikibooks.org/wiki/Human_Physiology/The_Urinary_System",
+    "title": "Urinary System",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  },
+  {
+    "description": "A vitamin is an organic molecule (or related set of molecules) which is an essential micronutrient, that an organism needs in small quantities for the proper functioning of its metabolism. Essential nutrients cannot be synthesized in the organism, either at all or not in sufficient quantities, and therefore must be obtained through the diet",
+    "image": "https://cdn.24.co.za/files/Cms/General/d/3885/fbbadccebef949e39cb84bfad3e3a8e2.jpg",
+    "url": "https://en.wikipedia.org/wiki/Vitamins",
+    "title": "Vitamins",
+    "video": "https://www.youtube.com/watch?v=aBL6COBGjCA"
+  }
+]

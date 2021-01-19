@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.teracode.medihelp.business.interactors.splash.SyncCategories
+import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncSubcategories
 import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager
@@ -24,6 +25,7 @@ object SyncManagerModule {
     fun provideDrugsNetworkSyncManager(
         syncDrugs: SyncDrugs,
         syncCategories: SyncCategories,
+        syncCounts: SyncCounts,
         syncSubcategories: SyncSubcategories,
         sharedPreferences: SharedPreferences,
         editor: SharedPreferences.Editor,
@@ -33,6 +35,7 @@ object SyncManagerModule {
             syncDrugs = syncDrugs,
             syncCategory = syncCategories,
             syncSubcategory = syncSubcategories,
+            syncCounts=syncCounts,
             sharedPreferences = sharedPreferences,
             remoteConfig=remoteConfig,
             editor=editor

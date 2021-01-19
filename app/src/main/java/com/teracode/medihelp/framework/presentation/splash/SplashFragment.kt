@@ -28,8 +28,6 @@ class SplashFragment : BaseFragment(
         super.onCreate(savedInstanceState)
 
 
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

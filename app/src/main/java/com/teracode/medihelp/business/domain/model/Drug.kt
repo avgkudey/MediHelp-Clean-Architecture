@@ -54,8 +54,6 @@ data class Drug(
     }
 
 
-
-
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + title.hashCode()
@@ -77,4 +75,27 @@ data class Drug(
         result = 31 * result + subcategory_id.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "\n" +
+                "Drug(id='$id',\n " +
+                "title='$title',\n" +
+                " trade_name=$trade_name,\n " +
+                "pharmacological_name=$pharmacological_name,\n " +
+                "action=$action,\n " +
+                "antidote=$antidote,\n " +
+                "cautions=$cautions,\n " +
+                "contraindication=$contraindication,\n" +
+                " dosages=$dosages, \n" +
+                "indications=$indications, \n" +
+                "maximum_dose=$maximum_dose,\n " +
+                "nursing_implications=$nursing_implications, \n" +
+                "notes=$notes, preparation=$preparation, \n" +
+                "side_effects=$side_effects, \n" +
+                "video=$video, \n" +
+                "category_id=$category_id, \n" +
+                "subcategory_id=$subcategory_id)\n"
+    }
+
+
 }

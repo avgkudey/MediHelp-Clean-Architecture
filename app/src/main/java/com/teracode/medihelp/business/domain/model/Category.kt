@@ -11,6 +11,8 @@ data class Category(
     val image: String?,
     val url: String?,
     val description: String?,
+    val drugCount: Int = 0,
+    val subcategoryCount: Int = 0,
 ) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
@@ -25,8 +27,6 @@ data class Category(
         if (description != other.description) return false
         return true
     }
-
-
 
 
     override fun hashCode(): Int {

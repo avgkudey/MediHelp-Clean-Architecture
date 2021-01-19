@@ -6,6 +6,7 @@ import dependencies.SupportDependencies
 import dependencies.TestDependencies
 import dependencies.Java
 import dependencies.AnnotationProcessing
+import dependencies.DebugDependencies
 
 
 plugins {
@@ -100,17 +101,27 @@ dependencies {
     // Lottie
     implementation Dependencies.lottie_android
 
+    //Glide
+    implementation Dependencies.glide
+
 
     // Material Dialogs
     implementation Dependencies.material_dialogs_core
     implementation Dependencies.material_dialogs_input
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+
+    //BubbleScrollBar
+    implementation 'com.github.Trendyol:BubbleScrollBar:0.1'
+    implementation project(path: ':BubbleScroll')
+
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
 
     // Annotation processing
     kapt AnnotationProcessing.hilt_android_compiler
     kapt AnnotationProcessing.hilt_compiler
     kapt AnnotationProcessing.room_compiler
+    kapt AnnotationProcessing.glide_compiler
 
 
     // Support Dependencies
@@ -126,5 +137,8 @@ dependencies {
     testImplementation TestDependencies.junit4
     testImplementation TestDependencies.room_testing
     testRuntimeOnly TestDependencies.jupiter_engine
+
+    // Debug
+    debugImplementation DebugDependencies.leakCanary
 
 }

@@ -22,10 +22,13 @@ import com.teracode.medihelp.framework.datasource.network.implementation.Categor
 import com.teracode.medihelp.framework.datasource.network.implementation.DrugFirestoreServiceImpl.Companion.DRUGS_COLLECTION
 import com.teracode.medihelp.framework.datasource.network.model.CategoryNetworkEntity
 import com.teracode.medihelp.framework.datasource.network.model.DrugNetworkEntity
+import com.teracode.medihelp.framework.datasource.network.model.SubcategoryNetworkEntity
+import com.teracode.medihelp.framework.presentation.common.SpacesItemDecoration
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
 import com.teracode.medihelp.framework.presentation.drugcategory.state.DrugCategoryViewState
 import com.teracode.medihelp.framework.presentation.druglist.DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY
 import com.teracode.medihelp.framework.presentation.druglist.DrugListAdapter
+import com.teracode.medihelp.framework.presentation.subcategorylist.SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY
 import com.teracode.medihelp.util.cLog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_drug_category.*
@@ -89,9 +92,8 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
         viewModel.refreshData()
 
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         listAdapter = null
     }
 
@@ -129,13 +131,14 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
 
     private fun setupRecyclerView() {
         category_fragment_recyclerview.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = LinearLayoutManager(activity)
             listAdapter = DrugCategoryAdapter(
                 lifecycleOwner = viewLifecycleOwner,
                 itemInteraction = this@DrugCategoryFragment,
 
                 )
 
+            addItemDecoration(SpacesItemDecoration(8))
             adapter = listAdapter
 
         }
@@ -151,6 +154,9 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
                     listAdapter?.notifyDataSetChanged()
 
 
+//                    CoroutineScope(IO).launch {
+//                        syncSub(categoryList)
+//                    }
 
                 }
 
@@ -167,9 +173,23 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
 
     private fun navigateToSubcategoryPage(item: Category) {
 
-//        val bundle = bundleOf(DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY to item)
+        if (item.subcategoryCount > 0) {
+            val bundle = bundleOf(SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY to item)
 
-        findNavController().navigate(R.id.action_drugCategoryFragment_to_drugListFragment)
+            findNavController().navigate(
+                R.id.action_drugCategoryFragment_to_subcategoryFragment,
+                bundle
+            )
+        } else {
+            val bundle = bundleOf(DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY to item)
+
+            findNavController().navigate(
+                R.id.action_drugCategoryFragment_to_drugListFragment,
+                bundle
+            )
+        }
+
+
     }
 
     override fun onItemLongPress(position: Int, item: Category) {
@@ -197,7 +217,6 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
             viewModel.setLayoutManagerState(lmState)
         }
     }
-
 
 
 }

@@ -20,8 +20,12 @@ data class CategoryCacheEntity(
     var url: String?,
 
     @ColumnInfo(name = "description")
-    var description: String?
+    var description: String?,
 
+    @ColumnInfo(name = "drug_count")
+    var drugCount: Int = 0,
+    @ColumnInfo(name = "sub_count")
+    var subcategoryCount: Int = 0
 
 ) {
 

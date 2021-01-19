@@ -35,14 +35,19 @@ constructor(
         title: String,
         image: String?,
         url: String?,
-        description: String?
+        description: String?,
+        subcategoryCount: Int,
+        drugsCount: Int,
     ) = daoService.updateCategory(
         primaryKey = primaryKey,
         title = title,
         image = image,
         url = url,
         description = description,
-    )
+        subcategoryCount = subcategoryCount,
+        drugsCount = drugsCount,
+
+        )
 
     override suspend fun getAllCategories() = daoService.getAllCategories()
 

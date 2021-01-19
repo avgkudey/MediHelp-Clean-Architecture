@@ -1,5 +1,6 @@
 package com.teracode.medihelp.framework.datasource.cache.implementation
 
+import android.util.Log
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.framework.datasource.cache.abstraction.CategoryDaoService
 import com.teracode.medihelp.framework.datasource.cache.mappers.CategoryCacheMapper
@@ -54,14 +55,18 @@ constructor(
         title: String,
         image: String?,
         url: String?,
-        description: String?
+        description: String?,
+        subcategoryCount: Int,
+        drugsCount: Int,
     ): Int {
         return categoryDao.updateCategory(
             primaryKey = primaryKey,
             title = title,
             image = image,
             url = url,
-            description = description
+            description = description,
+            subcategoryCount = subcategoryCount,
+            drugsCount = drugsCount,
         )
     }
 
@@ -70,6 +75,9 @@ constructor(
     }
 
     override suspend fun getAllCategories(): List<Category> {
+//        Log.d("RELTION", "getAllCategories: ${categoryDao.getCategoryWithSubcategories()}")
+
+
         return categoryMapper.entityListToCategoryList(
             entities = categoryDao.getAllCategories()
         )

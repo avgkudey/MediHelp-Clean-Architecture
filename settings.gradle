@@ -1,2 +1,3 @@
+include ':BubbleScroll'
 include ':app'
 rootProject.name = "Medihelp"

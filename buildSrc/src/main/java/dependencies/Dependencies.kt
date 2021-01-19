@@ -51,6 +51,9 @@ object Dependencies {
     const val lottie_android="com.airbnb.android:lottie:${Versions.lottie_android}"
 
     // Material Dialog
-    const val material_dialogs_core="com.afollestad.material-dialogs:corecom.afollestad.material-dialogs:core:${Versions.material_dialogs}"
+    const val material_dialogs_core="com.afollestad.material-dialogs:core:${Versions.material_dialogs}"
     const val material_dialogs_input="com.afollestad.material-dialogs:input:${Versions.material_dialogs}"
+
+    // Glide
+    const val glide="com.github.bumptech.glide:glide:${Versions.glide}"
 }

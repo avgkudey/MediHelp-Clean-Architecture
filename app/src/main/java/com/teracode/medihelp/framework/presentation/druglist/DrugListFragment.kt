@@ -3,10 +3,13 @@ package com.teracode.medihelp.framework.presentation.druglist
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Drug
@@ -14,14 +17,21 @@ import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
+import com.teracode.medihelp.framework.presentation.drugdetail.DRUG_DETAIL_SELECTED_DRUG_ID_BUNDLE_KEY
 import com.teracode.medihelp.framework.presentation.druglist.state.DrugListViewState
+import com.teracode.medihelp.framework.presentation.subcategorylist.SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY
+import com.trendyol.bubblescrollbarlib.BubbleTextProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_drug_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.tasks.await
 
-const val DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY = "selectedCategory"
-const val DRUG_LIST_SELECTED_SUBCATEGORY_BUNDLE_KEY = "selectedSubcategory"
+private const val TAG = "DrugListFragment"
+const val DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY =
+    "com.teracode.medihelp.framework.presentation.druglist.selectedCategory"
+const val DRUG_LIST_SELECTED_SUBCATEGORY_BUNDLE_KEY =
+    "com.teracode.medihelp.framework.presentation.druglist.selectedSubcategory"
 const val DRUG_LIST_STATE_BUNDLE_KEY = "com.teracode.medihelp.framework.presentation.druglist.state"
 
 @ExperimentalCoroutinesApi
@@ -45,6 +55,9 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getSelectedCategoryBundle()
+        getSelectedSubcategoryBundle()
         setupUI()
         setupRecyclerView()
 
@@ -103,8 +116,8 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
         drug_list_swipe_refresh.setOnRefreshListener {
 
-            startNewSearch()
             drug_list_swipe_refresh.isRefreshing = false
+            startNewSearch()
         }
 
     }
@@ -218,6 +231,7 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
                 }
             })
             adapter = listAdapter
+
         }
     }
 
@@ -230,6 +244,14 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
     }
 
     override fun onItemSelected(position: Int, item: Drug) {
+
+
+//        val bundle = bundleOf(DRUG_DETAIL_SELECTED_DRUG_ID_BUNDLE_KEY to item)
+
+
+        val action = DrugListFragmentDirections.actionDrugListFragmentToDrugDetailFragment(item.id)
+
+        findNavController().navigate(action)
     }
 
     override fun restoreListPosition() {
@@ -261,5 +283,71 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
         super.onPause()
         saveLayoutManagerState()
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        listAdapter = null
+        itemTouchHelper = null
+
+    }
+
+    suspend fun syncSub(drugs: List<Drug>) {
+        val firestore = FirebaseFirestore.getInstance()
+
+        for (drug in drugs) {
+
+            val id = drug.id
+            val title = drug.title
+
+            val items = firestore.collection("subcategories").get().await()
+                .toObjects(SubcategoryNetworkSyncEntity::class.java)
+
+            for (item in items) {
+
+                if (item.root.equals(title, ignoreCase = true)) {
+
+                    val cat = hashMapOf(
+
+
+                        "id" to item.id,
+                        "title" to item.title,
+                        "categoryId" to id,
+                        "image" to item.image,
+                        "url" to item.link,
+                        "description" to item.description,
+
+
+                        )
+
+
+
+
+
+                    firestore.collection("subcategories").document(item.id).set(cat)
+                        .addOnFailureListener {
+                            Log.d(TAG, "syncSub: ${it.message}")
+                        }.addOnCompleteListener {
+                            Log.d(TAG, "syncSub: complete ${item.title} ${item.id}")
+                        }
+                }
+
+            }
+
+
+        }
+
+    }
+
+
+    data class SubcategoryNetworkSyncEntity(
+        var id: String = "",
+        var title: String = "",
+        var image: String? = "",
+        var root: String? = "",
+        var link: String? = "",
+        var description: String? = "",
+    )
+
 
 }

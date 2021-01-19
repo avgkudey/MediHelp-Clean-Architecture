@@ -6,7 +6,8 @@ import com.teracode.medihelp.business.domain.state.ViewState
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class DrugCategoryViewState(
+class
+DrugCategoryViewState(
     var categoryList: ArrayList<Category>? = null,
     var layoutManagerState: Parcelable? = null,
     var numSubcategoriesInCache: Int? = null

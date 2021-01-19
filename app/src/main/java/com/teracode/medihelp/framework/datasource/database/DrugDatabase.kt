@@ -11,7 +11,7 @@ import com.teracode.medihelp.framework.datasource.cache.model.SubcategoryCacheEn
         DrugCacheEntity::class,
         CategoryCacheEntity::class,
         SubcategoryCacheEntity::class
-    ), version = 1
+    ), version = 2
 )
 abstract class DrugDatabase : RoomDatabase() {
 

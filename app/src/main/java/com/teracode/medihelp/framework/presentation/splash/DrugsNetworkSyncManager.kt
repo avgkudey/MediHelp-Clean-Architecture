@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.teracode.medihelp.business.interactors.splash.SyncCategories
+import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncSubcategories
 import com.teracode.medihelp.util.printLogD
@@ -26,6 +27,7 @@ constructor(
     private val syncDrugs: SyncDrugs,
     private val syncCategory: SyncCategories,
     private val syncSubcategory: SyncSubcategories,
+    private val syncCounts: SyncCounts,
     private val sharedPreferences: SharedPreferences,
     private val remoteConfig: FirebaseRemoteConfig,
     private val editor: SharedPreferences.Editor,
@@ -50,7 +52,6 @@ constructor(
             launch {
 
 
-                remoteConfig.reset()
                 remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         remoteVersion = remoteConfig.getValue(DATABASE_VERSION).asLong().toInt()
@@ -62,7 +63,9 @@ constructor(
                                 remoteVersion
                             )
                         ) {
+                            printLogD("DrugsNetworkSyncManager","syncDrugs.syncDrugs()")
                             syncDrugs.syncDrugs()
+
                         }
                     },
                     async {
@@ -70,6 +73,7 @@ constructor(
                                 remoteVersion
                             )
                         ) {
+                            printLogD("DrugsNetworkSyncManager","syncDrugs.syncCategories()")
                             syncCategory.syncCategories()
                         }
                     },
@@ -79,11 +83,25 @@ constructor(
                                 false
                             ) || isUpdateRequired(remoteVersion)
                         ) {
+                            printLogD("DrugsNetworkSyncManager","syncDrugs.syncSubcategories()")
+
                             syncSubcategory.syncSubcategories()
                         }
                     }
                 )
 
+
+
+
+                if (
+                    checkAlreadyNotSynced(DRUG_LIST_SYNCED, false) ||
+                    checkAlreadyNotSynced(CATEGORY_LIST_SYNCED, false) ||
+                    checkAlreadyNotSynced(SUBCATEGORY_LIST_SYNCED, false) ||
+                    isUpdateRequired(remoteVersion)
+                ) {
+                    printLogD("DrugsNetworkSyncManager","syncCounts.syncCategories()")
+                    syncCounts.syncCategories()
+                }
 
 
                 setDatabaseVersion(remoteVersion)

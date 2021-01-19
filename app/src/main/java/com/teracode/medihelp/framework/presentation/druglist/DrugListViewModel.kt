@@ -237,15 +237,12 @@ constructor(
 
 
     fun retrieveNumDrugsInCache() {
-
-        Log.d("DRUGLISTFRAC", "retrieveNumDrugsInCache")
         setStateEvent(GetNumDrugsInCacheEvent())
     }
 
     fun refreshSearchQuery() {
         setQueryExhausted(false)
         setStateEvent(SearchDrugsEvent(false))
-        Log.d("DRUGLISTFRAC", "refreshSearchQuery:  SearchDrugsEvent")
     }
 
     companion object {

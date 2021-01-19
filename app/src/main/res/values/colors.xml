@@ -10,4 +10,15 @@
     <color name="dark">#111111</color>
 
     <color name="textColor">#303030</color>
+    <color name="cardBackgroundColor">#FFFFFF</color>
+    <color name="colorDark">#111111</color>
+
+
+
+    <color name="colorPrimary">#FFF500</color>
+    <color name="colorSuccess">#04BA0C</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorLightText">#929292</color>
+    <color name="colorAccent">#FF3B00</color>
+
 </resources>

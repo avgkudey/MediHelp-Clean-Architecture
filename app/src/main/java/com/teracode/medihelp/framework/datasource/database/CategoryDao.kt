@@ -1,11 +1,9 @@
 package com.teracode.medihelp.framework.datasource.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.teracode.medihelp.framework.datasource.cache.model.CategoryCacheEntity
-import com.teracode.medihelp.framework.datasource.cache.model.DrugCacheEntity
+
+//import com.teracode.medihelp.framework.datasource.cache.relations.CategoryWithSubcategories
 
 
 @Dao
@@ -66,7 +64,9 @@ interface CategoryDao {
             title= :title,
             image= :image,
             url= :url,
-            description= :description
+            description= :description,
+            drug_count= :drugsCount,
+            sub_count = :subcategoryCount
         WHERE id = :primaryKey
     """
     )
@@ -75,7 +75,9 @@ interface CategoryDao {
         title: String,
         image: String?,
         url: String?,
-        description: String?
+        description: String?,
+        subcategoryCount: Int = 0,
+        drugsCount: Int = 0,
     ): Int
 
 
@@ -89,9 +91,13 @@ interface CategoryDao {
     /**
      * Returns all category records in cache [List<CategoryCacheEntity>]
      */
-    @Query("SELECT * FROM categories")
+    @Query("SELECT * FROM categories ORDER BY title ASC")
     suspend fun getAllCategories(): List<CategoryCacheEntity>
 
+
+//    @Transaction
+//    @Query("SELECT * FROM categories")
+//   suspend fun getCategoryWithSubcategories(): List<CategoryWithSubcategories>
 
 
 }
