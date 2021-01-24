@@ -49,13 +49,13 @@ class SyncSubcategories(
 
             val networkSubcategoryList = response?.data ?: ArrayList()
 
-            for (subcategory in networkSubcategoryList) {
-                cacheDataSource.searchSubcategoryById(subcategory.id)?.let { cachedSubcategory ->
+            for (networkSubcategory in networkSubcategoryList) {
+                cacheDataSource.searchSubcategoryById(networkSubcategory.id)?.let { cachedSubcategory ->
 
-                    cachedSubcategories.remove(subcategory)
-                    checkRequiresUpdate(cachedSubcategory, subcategory)
+                    cachedSubcategories.remove(cachedSubcategory)
+                    checkRequiresUpdate(cachedSubcategory, networkSubcategory)
 
-                } ?: cacheDataSource.insertSubcategory(subcategory)
+                } ?: cacheDataSource.insertSubcategory(networkSubcategory)
 
 
             }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
+import com.teracode.medihelp.business.domain.state.StateMessageCallback
 import com.teracode.medihelp.framework.datasource.cache.abstraction.CategoryDaoService
 import com.teracode.medihelp.framework.datasource.cache.implementation.CategoryDaoServiceImpl
 import com.teracode.medihelp.framework.datasource.network.implementation.CategoryFirestoreServiceImpl
@@ -23,6 +24,7 @@ import com.teracode.medihelp.framework.datasource.network.implementation.DrugFir
 import com.teracode.medihelp.framework.datasource.network.model.CategoryNetworkEntity
 import com.teracode.medihelp.framework.datasource.network.model.DrugNetworkEntity
 import com.teracode.medihelp.framework.datasource.network.model.SubcategoryNetworkEntity
+import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.SpacesItemDecoration
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
 import com.teracode.medihelp.framework.presentation.drugcategory.state.DrugCategoryViewState
@@ -48,7 +50,8 @@ const val CATEGORY_LIST_STATE_BUNDLE_KEY =
 @FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
+class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
+    DrugCategoryAdapter.ItemInteraction {
 
     private val viewModel: DrugCategoryViewModel by viewModels()
 
@@ -60,12 +63,6 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
         viewModel.setupChannel()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_drug_category, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,6 +89,7 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
         viewModel.refreshData()
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         listAdapter = null
@@ -154,15 +152,32 @@ class DrugCategoryFragment : Fragment(), DrugCategoryAdapter.ItemInteraction {
                     listAdapter?.notifyDataSetChanged()
 
 
-//                    CoroutineScope(IO).launch {
-//                        syncSub(categoryList)
-//                    }
-
                 }
 
             }
 
         })
+
+        viewModel.shouldDisplayProgressBar.observe(viewLifecycleOwner, {
+            uiController.displayProgressBar(it)
+        })
+
+        viewModel.stateMessage.observe(viewLifecycleOwner, { stateMessage ->
+            stateMessage?.let { message ->
+
+
+                uiController.onResponseReceived(
+                    response = message.response,
+                    stateMessageCallback = object : StateMessageCallback {
+                        override fun removeMessageFromStack() {
+                            viewModel.clearStateMessage()
+                        }
+                    }
+                )
+
+            }
+        })
+
 
     }
 

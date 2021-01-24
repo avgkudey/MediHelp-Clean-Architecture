@@ -1,7 +1,5 @@
 package com.teracode.medihelp.di
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.business.data.cache.abstraction.CategoryCacheDataSource
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.data.cache.abstraction.SubcategoryCacheDataSource
@@ -17,7 +15,6 @@ import com.teracode.medihelp.business.data.network.implementation.SubcategoryNet
 import com.teracode.medihelp.framework.datasource.cache.abstraction.CategoryDaoService
 import com.teracode.medihelp.framework.datasource.cache.abstraction.DrugDaoService
 import com.teracode.medihelp.framework.datasource.cache.abstraction.SubcategoryDaoService
-import com.teracode.medihelp.framework.datasource.cache.implementation.SubcategoryDaoServiceImpl
 import com.teracode.medihelp.framework.datasource.network.abstraction.CategoryFirestoreService
 import com.teracode.medihelp.framework.datasource.network.abstraction.DrugFirestoreService
 import com.teracode.medihelp.framework.datasource.network.abstraction.SubcategoryFirestoreService

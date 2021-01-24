@@ -3,6 +3,7 @@
     package="com.teracode.medihelp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".framework.presentation.BaseApplication"
         android:allowBackup="true"
@@ -11,14 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Medihelp">
-        <activity android:name=".framework.presentation.MainActivity">
+        <activity android:name=".framework.presentation.onboarding.OnboardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".framework.presentation.datasync.DataSyncActivity" />
+        <activity android:name=".framework.presentation.auth.AuthActivity" />
+        <activity android:name=".framework.presentation.MainActivity" />
 
         <service
             android:name=".framework.presentation.common.DrugFirebaseMessagingService"
@@ -27,6 +30,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

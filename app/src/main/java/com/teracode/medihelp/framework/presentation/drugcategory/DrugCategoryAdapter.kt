@@ -69,7 +69,7 @@ class DrugCategoryAdapter(
     class DrugCategoryViewHolder(
         itemView: View,
         private val lifecycleOwner: LifecycleOwner,
-        private val itemInteraction: ItemInteraction?
+        private val itemInteraction: ItemInteraction?,
     ) :
         RecyclerView.ViewHolder(itemView) {
         private lateinit var category: Category
@@ -111,11 +111,15 @@ class DrugCategoryAdapter(
 
 
 //           category.image?.let {
-               Glide.with(itemView.context).load("https://firebase.google.com/images/social.png").into(category_item_image)
+            Glide.with(itemView.context).load("https://firebase.google.com/images/social.png")
+                .into(category_item_image)
 //           }
 
 
             category_list_item_view_more_btn.gone()
+            category_list_item_drug_count.gone()
+            category_list_item_sub_count.gone()
+//            category_list_item_description.gone()
         }
 
     }

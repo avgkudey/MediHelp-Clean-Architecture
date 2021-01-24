@@ -50,13 +50,13 @@ class SyncCategories(
 
             val networkCategoryList = response?.data ?: ArrayList()
 
-            for (category in networkCategoryList) {
-                cacheDataSource.searchCategoryById(category.id)?.let { cachedCategory ->
+            for (networkCategory in networkCategoryList) {
+                cacheDataSource.searchCategoryById(networkCategory.id)?.let { cachedCategory ->
 
-                    cachedCategories.remove(category)
-                    checkRequiresUpdate(cachedCategory, category)
+                    cachedCategories.remove(cachedCategory)
+                    checkRequiresUpdate(cachedCategory, networkCategory)
 
-                } ?: cacheDataSource.insertCategory(category)
+                } ?: cacheDataSource.insertCategory(networkCategory)
 
                 for (cachedCategory in cachedCategories) {
                     networkDataSource.searchCategory(cachedCategory)

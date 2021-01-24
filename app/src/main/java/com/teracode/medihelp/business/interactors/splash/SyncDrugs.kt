@@ -53,13 +53,13 @@ class SyncDrugs(
 
             val networkDrugList = response?.data ?: ArrayList()
 
-            for (drug in networkDrugList) {
-                drugCacheDataSource.searchDrugById(drug.id)?.let { cachedDrug ->
+            for (networkDrug in networkDrugList) {
+                drugCacheDataSource.searchDrugById(networkDrug.id)?.let { cachedDrug ->
 
-                    cachedDrugs.remove(drug)
-                    checkRequiresUpdate(cachedDrug, drug)
+                    cachedDrugs.remove(cachedDrug)
+                    checkRequiresUpdate(cachedDrug, networkDrug)
 
-                } ?: drugCacheDataSource.insertDrug(drug)
+                } ?: drugCacheDataSource.insertDrug(networkDrug)
             }
 
             for (cachedDrug in cachedDrugs) {

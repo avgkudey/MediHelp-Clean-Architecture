@@ -18,7 +18,7 @@ interface UIController {
         response: Response,
         stateMessageCallback: StateMessageCallback
     )
-
+    fun isStoragePermissionGranted(): Boolean
 }
 
 

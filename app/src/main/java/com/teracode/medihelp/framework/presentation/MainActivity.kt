@@ -4,11 +4,15 @@ import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.input.input
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.teracode.medihelp.R
@@ -17,7 +21,13 @@ import com.teracode.medihelp.business.domain.state.UIComponentType.Toast
 import com.teracode.medihelp.framework.presentation.common.displayToast
 import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.visible
+import com.teracode.medihelp.framework.presentation.drugdetail.DrugDetailFragment
+import com.teracode.medihelp.framework.presentation.druglist.DrugListFragment
+import com.teracode.medihelp.framework.presentation.subcategorylist.SubcategoryFragment
+import com.teracode.medihelp.util.BOTTOM_NAV_BACKSTACK_KEY
+import com.teracode.medihelp.util.BottomNavController
 import com.teracode.medihelp.util.TodoCallback
+import com.teracode.medihelp.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,20 +38,51 @@ private const val TAG = "MainActivity"
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(),
-    UIController {
+class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChanged,
+    BottomNavController.OnNavigationReselectedListener {
+
+    private lateinit var bottomNavigationView: BottomNavigationView
 
 
-    private var dialogInView: MaterialDialog? = null
 
+    private val bottomNavController by lazy(LazyThreadSafetyMode.NONE) {
+        BottomNavController(
+            this,
+            R.id.main_fragments_container,
+            R.id.menu_nav_drugs,
+            this
+
+        )
+    }
+
+    override fun onBackPressed() = bottomNavController.onBackPressed()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupBottomNavigationView(savedInstanceState)
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntArray(
+            BOTTOM_NAV_BACKSTACK_KEY,
+            bottomNavController.navigationBackStack.toIntArray()
+        )
 
 
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item?.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+
+    }
 
     override fun displayProgressBar(isDisplayed: Boolean) {
         if (isDisplayed)
@@ -50,241 +91,59 @@ class MainActivity : AppCompatActivity(),
             main_progress_bar.gone()
     }
 
-    override fun hideSoftKeyboard() {
-        if (currentFocus != null) {
-            val inputMethodManager = getSystemService(
-                Context.INPUT_METHOD_SERVICE
-            ) as InputMethodManager
-            inputMethodManager
-                .hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
+
+
+
+
+
+
+
+
+
+    override fun onGraphChange() {
+
     }
 
-    override fun displayInputCaptureDialog(title: String, callback: DialogInputCaptureCallback) {
+    override fun onReselectNavItem(navController: NavController, fragment: Fragment) {
 
-        dialogInView = MaterialDialog(this).show {
-            title(text = title)
-            input(
-                waitForPositiveButton = true,
-                inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-            ) { _, text ->
-                callback.onTextCaptured(text.toString())
+        when (fragment) {
+            is SubcategoryFragment -> {
+                navController.navigate(R.id.action_subcategoryFragment_to_drugCategoryFragment)
             }
-            positiveButton(R.string.text_ok)
-            onDismiss {
-                dialogInView = null
+            is DrugListFragment -> {
+                navController.navigate(R.id.action_drugListFragment_to_drugCategoryFragment)
             }
-            cancelable(true)
-        }
-    }
-
-    override fun onResponseReceived(
-        response: Response,
-        stateMessageCallback: StateMessageCallback
-    ) {
-
-
-        when (response.uiComponentType) {
-            is Toast -> {
-                response.message?.let {
-                    displayToast(message = it, stateMessageCallback = stateMessageCallback)
-                }
+            is DrugDetailFragment -> {
+                navController.navigate(R.id.action_drugDetailFragment_to_drugCategoryFragment)
             }
-            is UIComponentType.Dialog -> {
-                displayDialog(
-                    response = response,
-                    stateMessageCallback = stateMessageCallback
-                )
-            }
-            is UIComponentType.AreYouSureDialog -> {
+            else -> {
 
-
-                response.message?.let {
-                    dialogInView = areYouSureDialog(
-                        message = it,
-                        callback = response.uiComponentType.callback,
-                        stateMessageCallback = stateMessageCallback
-                    )
-                }
-            }
-            is UIComponentType.SnackBar -> {
-
-
-                val onDismissCallback: TodoCallback? = response.uiComponentType.onDismissCallback
-                val undoCallback: SnackbarUndoCallback? = response.uiComponentType.undoCallback
-                response.message?.let { msg ->
-                    displaySnackbar(
-                        message = msg,
-                        snackBarUndoCallback = undoCallback,
-                        onDismissCallback = onDismissCallback,
-                        stateMessageCallback = stateMessageCallback
-                    )
-                }
-            }
-            is UIComponentType.None -> {
-                // This would be a good place to send to your Error Reporting
-                // software of choice (ex: Firebase crash reporting)
-                Log.i(TAG, "onResponseReceived: ${response.message}")
-                stateMessageCallback.removeMessageFromStack()
             }
         }
     }
 
-
-    private fun displaySnackbar(
-        message: String,
-        snackBarUndoCallback: SnackbarUndoCallback?,
-        onDismissCallback: TodoCallback?,
-        stateMessageCallback: StateMessageCallback
-    ) {
-        val snackBar = Snackbar.make(
-            findViewById(R.id.main_container),
-            message,
-            Snackbar.LENGTH_LONG
-        )
-        snackBar.setAction(
-            getString(R.string.text_undo),
-            SnackbarUndoListener(snackBarUndoCallback)
-        )
-        snackBar.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                onDismissCallback?.execute()
+    private fun setupBottomNavigationView(savedInstanceState: Bundle?) {
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView.setUpNavigation(bottomNavController, this)
+        if (savedInstanceState == null) {
+            bottomNavController.setupBottomNavigationBackStack(null)
+            bottomNavController.onNavigationItemSelected()
+        } else {
+            (savedInstanceState[BOTTOM_NAV_BACKSTACK_KEY] as IntArray?)?.let { items ->
+                val backstack = BottomNavController.BackStack()
+                backstack.addAll(items.toTypedArray())
+                bottomNavController.setupBottomNavigationBackStack(backstack)
             }
-        })
-        snackBar.show()
-        stateMessageCallback.removeMessageFromStack()
-    }
-
-
-    private fun displayDialog(
-        response: Response,
-        stateMessageCallback: StateMessageCallback
-    ) {
-        response.message?.let { message ->
-
-            dialogInView = when (response.messageType) {
-
-                is MessageType.Error -> {
-                    displayErrorDialog(
-                        message = message,
-                        stateMessageCallback = stateMessageCallback
-                    )
-                }
-
-                is MessageType.Success -> {
-                    displaySuccessDialog(
-                        message = message,
-                        stateMessageCallback = stateMessageCallback
-                    )
-                }
-
-                is MessageType.Info -> {
-                    displayInfoDialog(
-                        message = message,
-                        stateMessageCallback = stateMessageCallback
-                    )
-                }
-
-                else -> {
-                    // do nothing
-                    stateMessageCallback.removeMessageFromStack()
-                    null
-                }
-            }
-        } ?: stateMessageCallback.removeMessageFromStack()
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        if (dialogInView != null) {
-            (dialogInView as MaterialDialog).dismiss()
-            dialogInView = null
         }
     }
 
+    private fun navAuthActivity() {
 
-    private fun displaySuccessDialog(
-        message: String?,
-        stateMessageCallback: StateMessageCallback
-    ): MaterialDialog {
-        return MaterialDialog(this)
-            .show {
-                title(R.string.text_success)
-                message(text = message)
-                positiveButton(R.string.text_ok) {
-                    stateMessageCallback.removeMessageFromStack()
-                    dismiss()
-                }
-                onDismiss {
-                    dialogInView = null
-                }
-                cancelable(false)
-            }
+//        TODO navAuthActivity
+//        val intent = Intent(this, AuthActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//        (application as BaseApplication).releaseMainComponent()
     }
 
-    private fun displayErrorDialog(
-        message: String?,
-        stateMessageCallback: StateMessageCallback
-    ): MaterialDialog {
-        return MaterialDialog(this)
-            .show {
-                title(R.string.text_error)
-                message(text = message)
-                positiveButton(R.string.text_ok) {
-                    stateMessageCallback.removeMessageFromStack()
-                    dismiss()
-                }
-                onDismiss {
-                    dialogInView = null
-                }
-                cancelable(false)
-            }
-    }
-
-
-    private fun displayInfoDialog(
-        message: String?,
-        stateMessageCallback: StateMessageCallback
-    ): MaterialDialog {
-        return MaterialDialog(this)
-            .show {
-                title(R.string.text_info)
-                message(text = message)
-                positiveButton(R.string.text_ok) {
-                    stateMessageCallback.removeMessageFromStack()
-                    dismiss()
-                }
-                onDismiss {
-                    dialogInView = null
-                }
-                cancelable(false)
-            }
-    }
-
-    private fun areYouSureDialog(
-        message: String,
-        callback: AreYouSureCallback,
-        stateMessageCallback: StateMessageCallback
-    ): MaterialDialog {
-        return MaterialDialog(this)
-            .show {
-                title(R.string.are_you_sure)
-                message(text = message)
-                negativeButton(R.string.text_cancel) {
-                    stateMessageCallback.removeMessageFromStack()
-                    callback.cancel()
-                    dismiss()
-                }
-                positiveButton(R.string.text_yes) {
-                    stateMessageCallback.removeMessageFromStack()
-                    callback.proceed()
-                    dismiss()
-                }
-                onDismiss {
-                    dialogInView = null
-                }
-                cancelable(false)
-            }
-    }
 }

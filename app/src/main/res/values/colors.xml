@@ -13,7 +13,8 @@
     <color name="cardBackgroundColor">#FFFFFF</color>
     <color name="colorDark">#111111</color>
 
-
+    <color name="tealDark">#0094DE</color>
+    <color name="grey4">#7d7d7d</color>
 
     <color name="colorPrimary">#FFF500</color>
     <color name="colorSuccess">#04BA0C</color>

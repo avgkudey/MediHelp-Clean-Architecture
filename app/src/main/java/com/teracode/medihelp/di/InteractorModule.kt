@@ -43,6 +43,7 @@ object InteractorModule {
 
         )
     }
+
     @Singleton
     @Provides
     fun provideDrugDetailInteractors(
@@ -57,7 +58,7 @@ object InteractorModule {
     @Provides
     fun provideDrugCategoryInteractors(
         getCategories: GetCategories,
-        getNumSubcategories: GetNumSubcategories
+        getNumSubcategories: GetNumSubcategories,
     ): DrugCategoryInteractors {
         return DrugCategoryInteractors(
 
@@ -71,7 +72,7 @@ object InteractorModule {
     @Provides
     fun provideSubcategoryInteractors(
         getNumSubcategories: GetNumDrugSubcategories,
-        searchSubcategories: SearchSubcategories
+        searchSubcategories: SearchSubcategories,
     ): SubcategoryInteractors {
         return SubcategoryInteractors(
             getNumSubcategories = getNumSubcategories,
@@ -84,7 +85,7 @@ object InteractorModule {
     fun provideSyncDrugs(
         drugCacheDataSource: DrugCacheDataSource,
         drugNetworkDataSource: DrugNetworkDataSource,
-        editor: SharedPreferences.Editor
+        editor: SharedPreferences.Editor,
     ): SyncDrugs {
         return SyncDrugs(
             drugCacheDataSource = drugCacheDataSource,
@@ -98,12 +99,15 @@ object InteractorModule {
     fun provideSyncCounts(
         drugCacheDataSource: DrugCacheDataSource,
         categoryCacheDataSource: CategoryCacheDataSource,
-        subcategoryCacheDataSource: SubcategoryCacheDataSource
+        subcategoryCacheDataSource: SubcategoryCacheDataSource,
+        editor: SharedPreferences.Editor,
     ): SyncCounts {
         return SyncCounts(
             drugCacheDataSource = drugCacheDataSource,
             categoryCacheDataSource = categoryCacheDataSource,
             subcategoryCacheDataSource = subcategoryCacheDataSource,
+            editor = editor
+
         )
     }
 
@@ -112,7 +116,7 @@ object InteractorModule {
     fun provideSyncCategories(
         categoryCacheDataSource: CategoryCacheDataSource,
         categoryNetworkDataSource: CategoryNetworkDataSource,
-        editor: SharedPreferences.Editor
+        editor: SharedPreferences.Editor,
     ): SyncCategories {
         return SyncCategories(
             cacheDataSource = categoryCacheDataSource,
@@ -126,7 +130,7 @@ object InteractorModule {
     fun provideSyncSubcategories(
         categoryCacheDataSource: SubcategoryCacheDataSource,
         categoryNetworkDataSource: SubcategoryNetworkDataSource,
-        editor: SharedPreferences.Editor
+        editor: SharedPreferences.Editor,
     ): SyncSubcategories {
         return SyncSubcategories(
             cacheDataSource = categoryCacheDataSource,
@@ -169,7 +173,7 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideGetNumSubcategories(
-        subcategoryCacheDataSource: SubcategoryCacheDataSource
+        subcategoryCacheDataSource: SubcategoryCacheDataSource,
     ): GetNumSubcategories {
         return GetNumSubcategories(
             subcategoryCacheDataSource = subcategoryCacheDataSource,
@@ -179,7 +183,7 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideGetNumDrugSubcategories(
-        subcategoryCacheDataSource: SubcategoryCacheDataSource
+        subcategoryCacheDataSource: SubcategoryCacheDataSource,
     ): GetNumDrugSubcategories {
         return GetNumDrugSubcategories(
             subcategoryCacheDataSource = subcategoryCacheDataSource,
@@ -189,7 +193,7 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideGetCategories(
-        categoryCacheDataSource: CategoryCacheDataSource
+        categoryCacheDataSource: CategoryCacheDataSource,
     ): GetCategories {
         return GetCategories(
             categoryCacheDataSource = categoryCacheDataSource
@@ -199,7 +203,7 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideSearchSubcategories(
-        dataSource: SubcategoryCacheDataSource
+        dataSource: SubcategoryCacheDataSource,
     ): SearchSubcategories {
         return SearchSubcategories(
             dataSource = dataSource

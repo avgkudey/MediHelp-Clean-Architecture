@@ -9,7 +9,10 @@ import com.teracode.medihelp.business.interactors.splash.SyncCategories
 import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncSubcategories
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager
 import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager
+import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuestions
+import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuizzes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,16 +32,41 @@ object SyncManagerModule {
         syncSubcategories: SyncSubcategories,
         sharedPreferences: SharedPreferences,
         editor: SharedPreferences.Editor,
-        remoteConfig: FirebaseRemoteConfig
+        remoteConfig: FirebaseRemoteConfig,
     ): DrugsNetworkSyncManager {
         return DrugsNetworkSyncManager(
             syncDrugs = syncDrugs,
             syncCategory = syncCategories,
             syncSubcategory = syncSubcategories,
-            syncCounts=syncCounts,
+            syncCounts = syncCounts,
             sharedPreferences = sharedPreferences,
-            remoteConfig=remoteConfig,
-            editor=editor
+            remoteConfig = remoteConfig,
+            editor = editor
+        )
+    }
+
+    @Provides
+    fun provideDataNetworkSyncManager(
+        syncDrugs: SyncDrugs,
+        syncCategories: SyncCategories,
+        syncCounts: SyncCounts,
+        syncSubcategories: SyncSubcategories,
+        syncQuizzes: SyncQuizzes,
+        syncQuestions: SyncQuestions,
+        sharedPreferences: SharedPreferences,
+        editor: SharedPreferences.Editor,
+        remoteConfig: FirebaseRemoteConfig,
+    ): DataNetworkSyncManager {
+        return DataNetworkSyncManager(
+            syncDrugs = syncDrugs,
+            syncCategory = syncCategories,
+            syncSubcategory = syncSubcategories,
+            syncCounts = syncCounts,
+            syncQuizzes = syncQuizzes,
+            syncQuestions = syncQuestions,
+            sharedPreferences = sharedPreferences,
+            remoteConfig = remoteConfig,
+            editor = editor
         )
     }
 

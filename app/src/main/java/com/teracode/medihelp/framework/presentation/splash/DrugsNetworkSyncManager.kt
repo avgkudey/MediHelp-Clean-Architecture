@@ -150,6 +150,8 @@ constructor(
         const val CATEGORY_LIST_SYNCED = "categoryListSynced"
         const val SUBCATEGORY_LIST_SYNCED = "subcategoryListSynced"
         const val DATABASE_VERSION = "database_version"
+        const val QUIZ_LIST_SYNCED = "quizListSynced"
+        const val QUESTION_LIST_SYNCED = "questionListSynced"
     }
 }
 

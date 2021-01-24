@@ -13,6 +13,8 @@ import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.DataState
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager
+import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager
 import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.CATEGORY_LIST_SYNCED
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,7 +23,8 @@ import kotlinx.coroutines.withContext
 class SyncCounts(
     private val categoryCacheDataSource: CategoryCacheDataSource,
     private val subcategoryCacheDataSource: SubcategoryCacheDataSource,
-    private val drugCacheDataSource: DrugCacheDataSource
+    private val drugCacheDataSource: DrugCacheDataSource,
+    private val editor: SharedPreferences.Editor,
 ) {
 
     suspend fun syncCategories() {
@@ -47,6 +50,8 @@ class SyncCounts(
             }
 
         }
+
+        setSynced(DataNetworkSyncManager.DRUG_COUNT_SYNCED, true)
     }
 
     private suspend fun updateCategory(category: Category, subcategoryCount: Int, drugsCount: Int) {
@@ -66,7 +71,7 @@ class SyncCounts(
     private fun checkRequireUpdate(
         category: Category,
         subcategoryCount: Int,
-        drugsCount: Int
+        drugsCount: Int,
     ): Boolean {
 
         return !(category.drugCount == drugsCount && category.subcategoryCount == subcategoryCount)
@@ -146,5 +151,9 @@ class SyncCounts(
         return response?.data ?: 0
     }
 
+    private fun setSynced(key: String, value: Boolean) {
 
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
 }

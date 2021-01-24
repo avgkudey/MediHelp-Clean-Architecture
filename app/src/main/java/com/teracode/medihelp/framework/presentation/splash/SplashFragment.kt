@@ -23,7 +23,7 @@ class SplashFragment : BaseFragment(
     R.layout.fragment_splash
 ) {
 
-    val viewModel: SplashViewModel by viewModels()
+    private val viewModel: SplashViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +63,9 @@ class SplashFragment : BaseFragment(
 
         setFeedback("Data syncing complete...")
 
-        findNavController().navigate(R.id.action_splashFragment_to_drugCategoryFragment)
+
+
+//        findNavController().navigate(R.id.action_splashFragment_to_drugCategoryFragment)
         printLogD(
             "DRUGS:SyncDrugs",
             "Sync Complete"

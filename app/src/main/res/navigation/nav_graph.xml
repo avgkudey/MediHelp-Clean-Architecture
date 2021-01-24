@@ -3,23 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/drugCategoryFragment">
 
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.teracode.medihelp.framework.presentation.splash.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
-        <action
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/splashFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_down"
-            android:id="@+id/action_splashFragment_to_drugCategoryFragment"
-            app:destination="@id/drugCategoryFragment" />
-    </fragment>
     <fragment
         android:id="@+id/drugListFragment"
         android:name="com.teracode.medihelp.framework.presentation.druglist.DrugListFragment"
@@ -28,6 +13,11 @@
         <action
             android:id="@+id/action_drugListFragment_to_drugDetailFragment"
             app:destination="@id/drugDetailFragment" />
+        <action
+            android:id="@+id/action_drugListFragment_to_drugCategoryFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/drugCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/drugCategoryFragment"
@@ -49,6 +39,11 @@
         <action
             android:id="@+id/action_subcategoryFragment_to_drugListFragment"
             app:destination="@id/drugListFragment" />
+        <action
+            android:id="@+id/action_subcategoryFragment_to_drugCategoryFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/drugCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/drugDetailFragment"
@@ -59,5 +54,10 @@
             android:name="drugId"
             app:argType="string"
             android:defaultValue='""' />
+        <action
+            android:id="@+id/action_drugDetailFragment_to_drugCategoryFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/drugCategoryFragment" />
     </fragment>
 </navigation>
