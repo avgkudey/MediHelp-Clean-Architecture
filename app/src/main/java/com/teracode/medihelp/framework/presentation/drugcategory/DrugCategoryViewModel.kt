@@ -27,10 +27,6 @@ constructor(
 ) : BaseViewModel<DrugCategoryViewState>() {
 
 
-    fun initData() {
-        Log.d(TAG, "initData: ")
-        setStateEvent(DrugCategoryStateEvent.GetCategoriesEvent())
-    }
 
     fun refreshData() {
 

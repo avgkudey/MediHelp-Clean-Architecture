@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tools_nav_graph"
+    app:startDestination="@id/bmiFragment">
+
+    <fragment
+        android:id="@+id/toolListFragment"
+        android:name="com.teracode.medihelp.toolsmodule.framework.presentation.toolslist.ToolListFragment"
+        android:label="fragment_tool_list"
+        tools:layout="@layout/fragment_tool_list" />
+    <fragment
+        android:id="@+id/bmiFragment"
+        android:name="com.teracode.medihelp.toolsmodule.framework.presentation.bmi.BmiFragment"
+        android:label="fragment_bmi"
+        tools:layout="@layout/fragment_bmi" />
+</navigation>

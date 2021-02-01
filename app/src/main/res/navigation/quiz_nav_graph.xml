@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quiz_nav_graph"
+    app:startDestination="@id/quizFragment">
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.teracode.medihelp.quizmodule.framework.presentation.quizlist.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz" >
+        <action
+            android:id="@+id/action_quizFragment_to_quizDetailFragment"
+            app:destination="@id/quizDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizDetailFragment"
+        android:name="com.teracode.medihelp.quizmodule.framework.presentation.quizdetail.QuizDetailFragment"
+        android:label="fragment_quiz_detail"
+        tools:layout="@layout/fragment_quiz_detail" >
+        <argument
+            android:name="quizId"
+            android:defaultValue=""
+            app:argType="string" />
+        <action
+            android:id="@+id/action_quizDetailFragment_to_quizFragment"
+            app:popUpTo="@+id/quiz_nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/quizFragment" />
+        <action
+            android:id="@+id/action_quizDetailFragment_to_quizStartFragment"
+            app:destination="@id/quizStartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizStartFragment"
+        android:name="com.teracode.medihelp.quizmodule.framework.presentation.quizstart.QuizStartFragment"
+        android:label="fragment_quiz_start"
+        tools:layout="@layout/fragment_quiz_start" >
+        <action
+            android:id="@+id/action_quizStartFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+    </fragment>
+</navigation>

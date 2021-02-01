@@ -17,7 +17,9 @@ class DataSyncActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        setTheme(R.style.Theme_Medihelp)
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_data_sync)
     }
 }

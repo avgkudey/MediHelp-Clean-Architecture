@@ -111,7 +111,7 @@ class DrugCategoryAdapter(
 
 
 //           category.image?.let {
-            Glide.with(itemView.context).load("https://firebase.google.com/images/social.png")
+            Glide.with(itemView.context).load("https://firebase.google.com/images/social.png").placeholder(R.drawable.placeholder_image)
                 .into(category_item_image)
 //           }
 

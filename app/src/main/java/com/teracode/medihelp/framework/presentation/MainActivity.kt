@@ -1,32 +1,20 @@
 package com.teracode.medihelp.framework.presentation
 
-import android.content.Context
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onDismiss
-import com.afollestad.materialdialogs.input.input
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import com.teracode.medihelp.R
-import com.teracode.medihelp.business.domain.state.*
-import com.teracode.medihelp.business.domain.state.UIComponentType.Toast
-import com.teracode.medihelp.framework.presentation.common.displayToast
 import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.visible
 import com.teracode.medihelp.framework.presentation.drugdetail.DrugDetailFragment
 import com.teracode.medihelp.framework.presentation.druglist.DrugListFragment
 import com.teracode.medihelp.framework.presentation.subcategorylist.SubcategoryFragment
+import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.QuizStartFragment
+import com.teracode.medihelp.quizmodule.framework.presentation.quizdetail.QuizDetailFragment
 import com.teracode.medihelp.util.BOTTOM_NAV_BACKSTACK_KEY
 import com.teracode.medihelp.util.BottomNavController
-import com.teracode.medihelp.util.TodoCallback
 import com.teracode.medihelp.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,7 +32,6 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
     private lateinit var bottomNavigationView: BottomNavigationView
 
 
-
     private val bottomNavController by lazy(LazyThreadSafetyMode.NONE) {
         BottomNavController(
             this,
@@ -58,8 +45,8 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
     override fun onBackPressed() = bottomNavController.onBackPressed()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        setTheme(R.style.Theme_Medihelp)
         setContentView(R.layout.activity_main)
-
         setupBottomNavigationView(savedInstanceState)
     }
 
@@ -92,14 +79,6 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
     }
 
 
-
-
-
-
-
-
-
-
     override fun onGraphChange() {
 
     }
@@ -115,6 +94,13 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
             }
             is DrugDetailFragment -> {
                 navController.navigate(R.id.action_drugDetailFragment_to_drugCategoryFragment)
+            }
+
+            is QuizDetailFragment -> {
+                navController.navigate(R.id.action_quizDetailFragment_to_quizFragment)
+            }
+            is QuizStartFragment -> {
+                navController.navigate(R.id.action_quizStartFragment_to_quizFragment)
             }
             else -> {
 

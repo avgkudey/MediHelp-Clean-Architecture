@@ -1,5 +1,6 @@
 package com.teracode.medihelp.framework.presentation.drugcategory
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
@@ -61,6 +63,13 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setupChannel()
+
+
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ROW_COUNT = 1
+        } else {
+            ROW_COUNT = 3
+        }
     }
 
 
@@ -117,10 +126,6 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
         }
     }
 
-    private fun initData() {
-        viewModel.clearList()
-        viewModel.initData()
-    }
 
 
     private fun setupUI() {
@@ -129,7 +134,7 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
 
     private fun setupRecyclerView() {
         category_fragment_recyclerview.apply {
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = GridLayoutManager(context, ROW_COUNT)
             listAdapter = DrugCategoryAdapter(
                 lifecycleOwner = viewLifecycleOwner,
                 itemInteraction = this@DrugCategoryFragment,
@@ -233,5 +238,9 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
         }
     }
 
+
+    companion object {
+        private var ROW_COUNT = 2
+    }
 
 }

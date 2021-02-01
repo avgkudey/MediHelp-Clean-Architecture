@@ -1,7 +1,6 @@
 package com.teracode.medihelp.business.interactors.splash
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.teracode.medihelp.business.data.cache.CacheResponseHandler
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.data.network.ApiResponseHandler
@@ -11,8 +10,6 @@ import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.state.DataState
 import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.DRUG_LIST_SYNCED
-import com.teracode.medihelp.util.cLog
-import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 

@@ -4,6 +4,7 @@ import com.teracode.medihelp.quizmodule.business.domain.model.Question
 import com.teracode.medihelp.quizmodule.framework.datasource.cache.abstraction.QuestionDaoService
 import com.teracode.medihelp.quizmodule.framework.datasource.cache.mappers.QuestionCacheMapper
 import com.teracode.medihelp.quizmodule.framework.datasource.database.QuestionDao
+import com.teracode.medihelp.util.printLogD
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -71,6 +72,8 @@ constructor(
     }
 
     override suspend fun getAllQuestionsByQuiz(quizId: String): List<Question> {
+        val result = dao.getAllQuestionsByQuiz(quizId = quizId)
+        printLogD("viewState.questionList", "getAllQuestionsByQuiz DAO SERVICE ${result}")
         return mapper.entityListToQuestionList(entities = dao.getAllQuestionsByQuiz(quizId = quizId))
     }
 

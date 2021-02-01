@@ -27,6 +27,12 @@ import com.teracode.medihelp.quizmodule.business.data.cache.abstraction.QuizCach
 import com.teracode.medihelp.quizmodule.business.data.network.abstraction.QuestionNetworkDataSource
 import com.teracode.medihelp.quizmodule.business.data.network.abstraction.QuizNetworkDataSource
 import com.teracode.medihelp.quizmodule.business.domain.model.QuestionValidator
+import com.teracode.medihelp.quizmodule.business.interactors.quizdetail.GetQuiz
+import com.teracode.medihelp.quizmodule.business.interactors.quizdetail.QuizDetailInteractors
+import com.teracode.medihelp.quizmodule.business.interactors.quizlist.GetQuizzes
+import com.teracode.medihelp.quizmodule.business.interactors.quizlist.QuizListInteractors
+import com.teracode.medihelp.quizmodule.business.interactors.quizstart.GetQuestions
+import com.teracode.medihelp.quizmodule.business.interactors.quizstart.QuizStartInteractors
 import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuestions
 import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuizzes
 import dagger.Module
@@ -38,6 +44,67 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object QuizInteractorModule {
+
+    @Singleton
+    @Provides
+    fun provideGetQuizzes(
+        cacheDataSource: QuizCacheDataSource,
+    ): GetQuizzes {
+        return GetQuizzes(
+            dataSource = cacheDataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetQuiz(
+        dataSource: QuizCacheDataSource,
+    ): GetQuiz {
+        return GetQuiz(
+            dataSource = dataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetQuestions(
+        dataSource: QuestionCacheDataSource,
+    ): GetQuestions {
+        return GetQuestions(
+            dataSource = dataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideQuizListInteractors(
+        getQuizzes: GetQuizzes,
+    ): QuizListInteractors {
+        return QuizListInteractors(
+            getQuizzes = getQuizzes,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideQuizStartInteractors(
+        getQuestions: GetQuestions,
+    ): QuizStartInteractors {
+        return QuizStartInteractors(
+            getQuestions = getQuestions
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideQuizDetailInteractors(
+        getQuiz: GetQuiz,
+    ): QuizDetailInteractors {
+        return QuizDetailInteractors(
+            getQuiz = getQuiz,
+        )
+    }
+
 
     @Singleton
     @Provides
@@ -62,7 +129,7 @@ object QuizInteractorModule {
         quizCacheDataSource: QuizCacheDataSource,
         networkDataSource: QuestionNetworkDataSource,
         editor: SharedPreferences.Editor,
-        validator: QuestionValidator
+        validator: QuestionValidator,
 
         ): SyncQuestions {
         return SyncQuestions(
@@ -70,8 +137,8 @@ object QuizInteractorModule {
             quizCacheDataSource = quizCacheDataSource,
             networkDataSource = networkDataSource,
             editor = editor,
-            validator=validator
+            validator = validator
 
-            )
+        )
     }
 }

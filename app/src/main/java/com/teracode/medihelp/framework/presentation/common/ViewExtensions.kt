@@ -25,6 +25,13 @@ fun View.visible() {
     visibility = View.VISIBLE
 }
 
+fun View.visibleOrGone(b: Boolean) {
+    visibility = if (b) View.VISIBLE else View.GONE
+}
+fun View.visibleOrInvisible(b: Boolean) {
+    visibility = if (b) View.VISIBLE else View.INVISIBLE
+}
+
 fun View.invisible() {
     visibility = View.INVISIBLE
 }
@@ -45,7 +52,7 @@ fun View.fadeIn() {
     }
 }
 
-fun View.fadeOut(todoCallback: TodoCallback? = null){
+fun View.fadeOut(todoCallback: TodoCallback? = null) {
     val animationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     apply {
         animate()
@@ -62,18 +69,18 @@ fun View.fadeOut(todoCallback: TodoCallback? = null){
 
 fun View.onSelectChangeColor(
     lifeCycleScope: CoroutineScope,
-    clickColor: Int
+    clickColor: Int,
 ) = CoroutineScope(lifeCycleScope.coroutineContext).launch {
-        val intialColor = (background as ColorDrawable).color
-        setBackgroundColor(
-            ContextCompat.getColor(
-                context,
-                clickColor
-            )
+    val intialColor = (background as ColorDrawable).color
+    setBackgroundColor(
+        ContextCompat.getColor(
+            context,
+            clickColor
         )
-        delay(CLICK_COLOR_CHANGE_TIME)
-        setBackgroundColor(intialColor)
-    }
+    )
+    delay(CLICK_COLOR_CHANGE_TIME)
+    setBackgroundColor(intialColor)
+}
 
 fun View.changeColor(newColor: Int) {
     setBackgroundColor(
@@ -100,26 +107,25 @@ fun EditText.enableContentInteraction() {
     isCursorVisible = true
     setBackgroundResource(android.R.color.white)
     requestFocus()
-    if(text != null){
+    if (text != null) {
         setSelection(text.length)
     }
 }
 
 
-
 fun Activity.displayToast(
-    @StringRes message:Int,
-    stateMessageCallback: StateMessageCallback
-){
+    @StringRes message: Int,
+    stateMessageCallback: StateMessageCallback,
+) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     stateMessageCallback.removeMessageFromStack()
 }
 
 fun Activity.displayToast(
-    message:String,
-    stateMessageCallback: StateMessageCallback
-){
-    Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
+    message: String,
+    stateMessageCallback: StateMessageCallback,
+) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     stateMessageCallback.removeMessageFromStack()
 }
 

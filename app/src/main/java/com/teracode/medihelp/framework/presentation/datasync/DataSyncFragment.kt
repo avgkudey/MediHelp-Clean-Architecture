@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.teracode.medihelp.R
+import com.teracode.medihelp.business.domain.state.StateMessageCallback
 import com.teracode.medihelp.framework.presentation.MainActivity
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.splash.SplashViewModel
@@ -23,6 +24,7 @@ class DataSyncFragment : BaseFragment(R.layout.fragment_data_sync) {
     private val viewModel: DataSyncViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 
@@ -47,6 +49,8 @@ class DataSyncFragment : BaseFragment(R.layout.fragment_data_sync) {
                 navHomeFragment()
             }
         })
+
+
     }
 
     private fun navHomeFragment() {
@@ -56,7 +60,6 @@ class DataSyncFragment : BaseFragment(R.layout.fragment_data_sync) {
     }
 
     private fun setFeedback(feedback: String) {
-
         data_sync_feedback.text = feedback
     }
 }

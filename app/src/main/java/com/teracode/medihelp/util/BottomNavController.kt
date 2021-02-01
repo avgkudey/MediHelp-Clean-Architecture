@@ -19,6 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teracode.medihelp.R
 import com.teracode.medihelp.framework.fragments.AuthNavHostFragment
 import com.teracode.medihelp.framework.fragments.DrugNavHostFragment
+import com.teracode.medihelp.framework.fragments.QuizNavHostFragment
+import com.teracode.medihelp.framework.fragments.ToolsNavHostFragment
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -35,7 +37,7 @@ class BottomNavController(
     val context: Context,
     @IdRes val containerId: Int,
     @IdRes val appStartDestinationId: Int,
-    val graphChangeListener: OnNavigationGraphChanged?
+    val graphChangeListener: OnNavigationGraphChanged?,
 ) {
     private val TAG: String = "AppDebug"
     lateinit var navigationBackStack: BackStack
@@ -63,12 +65,12 @@ class BottomNavController(
         val fragment = fragmentManager.findFragmentByTag(menuItemId.toString())
             ?: createNavHost(menuItemId)
         fragmentManager.beginTransaction()
-//            .setCustomAnimations(
-//                R.anim.fade_in,
-//                R.anim.fade_out,
-//                R.anim.fade_in,
-//                R.anim.fade_out
-//            )
+            .setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.fade_out
+            )
             .replace(containerId, fragment, menuItemId.toString())
             .addToBackStack(null)
             .commit()
@@ -89,9 +91,13 @@ class BottomNavController(
     private fun createNavHost(menuItemId: Int): Fragment {
         return when (menuItemId) {
 
-            R.id.menu_nav_quiz -> {
-                AuthNavHostFragment.create(R.navigation.auth_nav_graph)
+            R.id.menu_nav_tools -> {
+                ToolsNavHostFragment.create(R.navigation.tools_nav_graph)
             }
+            R.id.menu_nav_quiz -> {
+                QuizNavHostFragment.create(R.navigation.quiz_nav_graph)
+            }
+
 
             else -> {
                 DrugNavHostFragment.create(R.navigation.nav_graph)
@@ -185,7 +191,7 @@ class BottomNavController(
 // Convenience extension to set up the navigation
 fun BottomNavigationView.setUpNavigation(
     bottomNavController: BottomNavController,
-    onReselectListener: BottomNavController.OnNavigationReselectedListener
+    onReselectListener: BottomNavController.OnNavigationReselectedListener,
 ) {
 
     setOnNavigationItemSelectedListener {

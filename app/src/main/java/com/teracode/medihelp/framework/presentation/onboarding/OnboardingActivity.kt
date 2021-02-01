@@ -19,7 +19,9 @@ class OnboardingActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        setTheme(R.style.Theme_Medihelp)
         super.onCreate(savedInstanceState)
+//        setTheme(R.style.Theme_Medihelp)
         setContentView(R.layout.activity_onboarding)
         navigateToAuthActivity()
     }

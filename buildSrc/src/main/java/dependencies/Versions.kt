@@ -15,7 +15,7 @@ object Versions {
     //    Support
     const val appcompat = "1.2.0"
     const val constraint_layout = "2.0.4"
-    const val material_design = "1.2.1"
+    const val material_design = "1.3.0-rc01"
     const val swipe_refresh_layout = "1.1.0"
 
     // Firebase

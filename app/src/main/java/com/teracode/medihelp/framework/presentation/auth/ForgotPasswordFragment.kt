@@ -6,8 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.teracode.medihelp.R
+import com.teracode.medihelp.framework.presentation.common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
-class ForgotPasswordFragment : Fragment() {
+@ExperimentalCoroutinesApi
+@FlowPreview
+@AndroidEntryPoint
+class ForgotPasswordFragment : BaseFragment(R.layout.fragment_forgot_password) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,10 +22,5 @@ class ForgotPasswordFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_forgot_password, container, false)
-    }
+
 }

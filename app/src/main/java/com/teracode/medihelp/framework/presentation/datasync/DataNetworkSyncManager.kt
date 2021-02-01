@@ -4,6 +4,9 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.teracode.medihelp.business.data.network.ApiResponseHandler
+import com.teracode.medihelp.business.data.util.safeApiCall
+import com.teracode.medihelp.business.domain.state.DataState
 import com.teracode.medihelp.business.interactors.splash.SyncCategories
 import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
@@ -12,6 +15,7 @@ import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuestion
 import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuizzes
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -56,11 +60,20 @@ constructor(
             launch {
 
 
-                remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        remoteVersion = remoteConfig.getValue(DATABASE_VERSION).asLong().toInt()
-                    }
-                }.await()
+                val networkConfigResult =  safeApiCall(IO){
+                    remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                      if (task.isSuccessful) {
+                          remoteVersion = remoteConfig.getValue(DATABASE_VERSION).asLong().toInt()
+                      }
+                  }.await()
+
+              }
+
+
+
+
+
+
 
 
                 val remoteDatabaseUpdated = isRemoteDatabaseUpdated(remoteVersion)
@@ -119,22 +132,19 @@ constructor(
                         }
                     },
 
-//                Questions
-
-                    async {
-                        if (checkAlreadyNotSynced(
-                                QUESTION_LIST_SYNCED,
-                                false
-                            ) || remoteDatabaseUpdated
-                        ) {
-                            printLogD("DrugsNetworkSyncManager", "syncDrugs.syncSubcategories()")
-
-                            syncQuestions.syncCategories()
-                        }
-                    }
-
 
                 )
+
+
+
+                if (checkAlreadyNotSynced(
+                        QUESTION_LIST_SYNCED,
+                        false
+                    ) || remoteDatabaseUpdated) {
+                    printLogD("DrugsNetworkSyncManager", "syncDrugs.syncSubcategories()")
+
+                    syncQuestions.syncCategories()
+                }
 
 
 
@@ -168,6 +178,8 @@ constructor(
                 _hasSyncBeenExecuted.value = true
             }
         }
+
+
     }
 
     private fun checkAlreadyNotSynced(key: String, defVal: Boolean = false): Boolean {
@@ -182,7 +194,7 @@ constructor(
         printLogD("printLogD", "local db version $localVersion")
         printLogD("printLogD", "remote db version $remote_version")
 
-        return getExistingDatabaseVersion() != remote_version
+        return getExistingDatabaseVersion() < remote_version
     }
 
     private fun getExistingDatabaseVersion(): Int {

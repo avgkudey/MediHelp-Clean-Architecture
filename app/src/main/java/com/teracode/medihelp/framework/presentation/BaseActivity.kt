@@ -3,6 +3,7 @@ package com.teracode.medihelp.framework.presentation
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -26,6 +27,11 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
 
     private var dialogInView: MaterialDialog? = null
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Medihelp)
+    }
 
 
     abstract override  fun displayProgressBar(isDisplayed: Boolean)

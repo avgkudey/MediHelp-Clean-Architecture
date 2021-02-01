@@ -7,20 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.teracode.medihelp.R
+import com.teracode.medihelp.framework.presentation.common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_launcher.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
-class LauncherFragment : Fragment() {
+@ExperimentalCoroutinesApi
+@FlowPreview
+@AndroidEntryPoint
+class LauncherFragment : BaseFragment(R.layout.fragment_launcher) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_launcher, container, false)
     }
 
 

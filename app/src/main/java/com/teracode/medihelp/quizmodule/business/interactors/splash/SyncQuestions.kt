@@ -7,7 +7,6 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.state.DataState
 import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.QUESTION_LIST_SYNCED
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.QUIZ_LIST_SYNCED
 import com.teracode.medihelp.quizmodule.business.data.cache.abstraction.QuestionCacheDataSource
 import com.teracode.medihelp.quizmodule.business.data.cache.abstraction.QuizCacheDataSource
 import com.teracode.medihelp.quizmodule.business.data.network.abstraction.QuestionNetworkDataSource

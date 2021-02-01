@@ -2,7 +2,13 @@ package com.teracode.medihelp.framework.presentation.datasync
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.teracode.medihelp.business.domain.state.StateEvent
+import com.teracode.medihelp.framework.presentation.common.BaseViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class DataSyncViewModel
 @ViewModelInject
 constructor(
@@ -29,4 +35,6 @@ constructor(
 
         drugsNetworkSyncManager.executeDataSync(viewModelScope)
     }
+
+
 }
