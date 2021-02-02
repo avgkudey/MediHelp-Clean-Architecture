@@ -6,7 +6,7 @@ import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.ViewState
 import com.teracode.medihelp.util.OrderEnum
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SubcategoryListViewState(

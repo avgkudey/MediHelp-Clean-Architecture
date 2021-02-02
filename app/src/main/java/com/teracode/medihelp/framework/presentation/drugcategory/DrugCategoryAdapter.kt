@@ -1,7 +1,6 @@
 package com.teracode.medihelp.framework.presentation.drugcategory
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -10,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
+import com.teracode.medihelp.databinding.CategoryListItemBinding
 import com.teracode.medihelp.framework.presentation.common.gone
-import com.teracode.medihelp.framework.presentation.common.invisible
-import kotlinx.android.synthetic.main.category_list_item.view.*
 import java.util.ArrayList
 
 class DrugCategoryAdapter(
@@ -36,9 +34,13 @@ class DrugCategoryAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val binding = CategoryListItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+
+
         return DrugCategoryViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.category_list_item, parent, false),
+            itemBinding = binding,
             lifecycleOwner = lifecycleOwner,
             itemInteraction = itemInteraction
         )
@@ -67,11 +69,11 @@ class DrugCategoryAdapter(
 
 
     class DrugCategoryViewHolder(
-        itemView: View,
+        private val itemBinding: CategoryListItemBinding,
         private val lifecycleOwner: LifecycleOwner,
         private val itemInteraction: ItemInteraction?,
     ) :
-        RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemBinding.root) {
         private lateinit var category: Category
 
         fun bind(item: Category) = with(itemView) {
@@ -85,40 +87,41 @@ class DrugCategoryAdapter(
             }
 
             category = item
-            category_item_title.text = category.title
+            itemBinding.categoryItemTitle.text = category.title
 
 //            category_list_item_description.text = category.description
 
 
             if (category.subcategoryCount > 0) {
-                category_list_item_sub_count.text =
+                itemBinding.categoryListItemSubCount.text =
                     "${context.getText(R.string.subcategories_text)}${category.subcategoryCount}"
             } else {
-                category_list_item_sub_count.gone()
+                itemBinding.categoryListItemSubCount.gone()
             }
 
             if (category.drugCount > 0) {
-                category_list_item_drug_count.text =
+                itemBinding.categoryListItemDrugCount.text =
                     "${context.getString(R.string.drug_items_text)}${category.drugCount}"
 
 
             } else {
-                category_list_item_drug_count.text =
+                itemBinding.categoryListItemDrugCount.text =
                     context.getString(R.string.drug_items_not_found)
             }
-            category_list_item_description.text =
+            itemBinding.categoryListItemDescription.text =
                 category.description?.substring(0, 70) + context.getString(R.string.etc_text)
 
 
 //           category.image?.let {
-            Glide.with(itemView.context).load("https://firebase.google.com/images/social.png").placeholder(R.drawable.placeholder_image)
-                .into(category_item_image)
+            Glide.with(itemView.context).load("https://firebase.google.com/images/social.png")
+                .placeholder(R.drawable.placeholder_image)
+                .into(itemBinding.categoryItemImage)
 //           }
 
 
-            category_list_item_view_more_btn.gone()
-            category_list_item_drug_count.gone()
-            category_list_item_sub_count.gone()
+            itemBinding.categoryListItemViewMoreBtn.gone()
+            itemBinding.categoryListItemDrugCount.gone()
+            itemBinding.categoryListItemSubCount.gone()
 //            category_list_item_description.gone()
         }
 

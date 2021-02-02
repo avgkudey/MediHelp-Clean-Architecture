@@ -1,7 +1,7 @@
 package com.teracode.medihelp.quizmodule.framework.datasource.network
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class QuizNetworkEntity(

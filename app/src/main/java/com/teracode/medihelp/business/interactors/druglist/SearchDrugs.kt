@@ -50,7 +50,7 @@ class SearchDrugs(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: List<Drug>): DataState<DrugListViewState>? {
+            override suspend fun handleSuccess(resultObj: List<Drug>): DataState<DrugListViewState> {
                 var message: String? = SEARCH_DRUGS_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()
                 if (resultObj.isEmpty()) {

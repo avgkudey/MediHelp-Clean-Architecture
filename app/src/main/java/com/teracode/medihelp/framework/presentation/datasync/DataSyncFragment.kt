@@ -2,25 +2,25 @@ package com.teracode.medihelp.framework.presentation.datasync
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.teracode.medihelp.R
-import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentDataSyncBinding
 import com.teracode.medihelp.framework.presentation.MainActivity
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
-import com.teracode.medihelp.framework.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_data_sync.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class DataSyncFragment : BaseFragment(R.layout.fragment_data_sync) {
+class DataSyncFragment : BaseFragment<FragmentDataSyncBinding>() {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDataSyncBinding =
+        FragmentDataSyncBinding::inflate
+
     private val viewModel: DataSyncViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +60,7 @@ class DataSyncFragment : BaseFragment(R.layout.fragment_data_sync) {
     }
 
     private fun setFeedback(feedback: String) {
-        data_sync_feedback.text = feedback
+
+        binding.dataSyncFeedback.text = feedback
     }
 }

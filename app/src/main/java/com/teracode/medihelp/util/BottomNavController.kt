@@ -21,7 +21,7 @@ import com.teracode.medihelp.framework.fragments.AuthNavHostFragment
 import com.teracode.medihelp.framework.fragments.DrugNavHostFragment
 import com.teracode.medihelp.framework.fragments.QuizNavHostFragment
 import com.teracode.medihelp.framework.fragments.ToolsNavHostFragment
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Class credit: Allan Veloso

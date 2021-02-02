@@ -29,7 +29,7 @@ class GetQuiz(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: Quiz): DataState<QuizDetailViewState>? {
+            override suspend fun handleSuccess(resultObj: Quiz): DataState<QuizDetailViewState> {
                 var message: String? = SEARCH_QUIZ_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()
                 if (resultObj == null) {

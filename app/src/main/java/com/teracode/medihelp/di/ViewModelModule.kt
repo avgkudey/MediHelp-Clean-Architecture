@@ -1,15 +1,9 @@
 package com.teracode.medihelp.di
 
-import androidx.lifecycle.ViewModelProvider
-import com.teracode.medihelp.business.domain.model.DrugFactory
-import com.teracode.medihelp.business.interactors.druglist.DrugListInteractors
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
 
 @ExperimentalCoroutinesApi

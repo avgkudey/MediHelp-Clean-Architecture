@@ -6,7 +6,7 @@ import com.teracode.medihelp.business.domain.state.ViewState
 import com.teracode.medihelp.quizmodule.business.domain.model.Question
 import com.teracode.medihelp.quizmodule.business.domain.model.Quiz
 import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.state.QuizState.Initial
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class QuizStartViewState(

@@ -9,7 +9,7 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.state.DataState
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.DRUG_LIST_SYNCED
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager.Companion.DRUG_LIST_SYNCED
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -36,7 +36,7 @@ class SyncDrugs(
                 response = networkResult,
                 stateEvent = null
             ) {
-                override suspend fun handleSuccess(resultObj: List<Drug>): DataState<List<Drug>>? {
+                override suspend fun handleSuccess(resultObj: List<Drug>): DataState<List<Drug>> {
 
                     return DataState.data(
                         response = null,
@@ -109,7 +109,7 @@ class SyncDrugs(
             response = cachedResult,
             stateEvent = null
         ) {
-            override suspend fun handleSuccess(resultObj: List<Drug>): DataState<List<Drug>>? {
+            override suspend fun handleSuccess(resultObj: List<Drug>): DataState<List<Drug>> {
 
                 return DataState.data(
                     response = null,

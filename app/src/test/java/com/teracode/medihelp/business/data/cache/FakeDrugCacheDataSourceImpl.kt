@@ -3,6 +3,7 @@ package com.teracode.medihelp.business.data.cache
 import com.teracode.medihelp.business.data.cache.abstraction.DrugCacheDataSource
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.framework.datasource.database.DRUG_PAGINATION_PAGE_SIZE
+import com.teracode.medihelp.util.OrderEnum
 
 const val FORCE_DELETE_DRUG_EXCEPTION = "FORCE_DELETE_DRUG_EXCEPTION"
 const val FORCE_DELETES_DRUG_EXCEPTION = "FORCE_DELETES_DRUG_EXCEPTION"
@@ -16,10 +17,10 @@ constructor(
     private val drugData: HashMap<String, Drug>
 ) : DrugCacheDataSource {
     override suspend fun insertDrug(drug: Drug): Long {
-        if (drug.id.equals(FORCE_NEW_DRUG_EXCEPTION)) {
+        if (drug.id == FORCE_NEW_DRUG_EXCEPTION) {
             throw Exception("Something went wrong inserting the drug.")
         }
-        if (drug.id.equals(FORCE_GENERAL_FAILURE)) {
+        if (drug.id == FORCE_GENERAL_FAILURE) {
             return -1 // fail
         }
         drugData.put(drug.id, drug)
@@ -37,9 +38,9 @@ constructor(
     }
 
     override suspend fun deleteDrug(primaryKey: String): Int {
-        if (primaryKey.equals(FORCE_DELETE_DRUG_EXCEPTION)) {
+        if (primaryKey == FORCE_DELETE_DRUG_EXCEPTION) {
             throw Exception("Something went wrong deleting the drug.")
-        } else if (primaryKey.equals(FORCE_DELETES_DRUG_EXCEPTION)) {
+        } else if (primaryKey == FORCE_DELETES_DRUG_EXCEPTION) {
             throw Exception("Something went wrong deleting the drug.")
         }
         return drugData.remove(primaryKey)?.let {
@@ -77,7 +78,7 @@ constructor(
         category_id: String?,
         subcategory_id: String?
     ): Int {
-        if (primaryKey.equals(FORCE_UPDATE_DRUG_EXCEPTION)) {
+        if (primaryKey == FORCE_UPDATE_DRUG_EXCEPTION) {
             throw Exception("Something went wrong updating the drug.")
         }
         val updatedDrug = Drug(
@@ -106,22 +107,6 @@ constructor(
         } ?: -1 // nothing to update
     }
 
-    override suspend fun searchDrugs(query: String, filterAndOrder: String, page: Int): List<Drug> {
-
-        if (query.equals(FORCE_SEARCH_DRUGS_EXCEPTION)) {
-            throw Exception("Something went searching the cache for drugs.")
-        }
-        val results: ArrayList<Drug> = ArrayList()
-        for (drug in drugData.values) {
-            if (drug.title.contains(query)) {
-                results.add(drug)
-            }
-            if (results.size > (page * DRUG_PAGINATION_PAGE_SIZE)) {
-                break
-            }
-        }
-        return results
-    }
 
     override suspend fun getAllDrugs(): List<Drug> {
         return ArrayList(drugData.values)
@@ -131,8 +116,21 @@ constructor(
         return drugData.get(primaryKey)
     }
 
-    override suspend fun getNumDrugs(): Int {
-        return drugData.size
+    override suspend fun getNumDrugs(categoryId: String?, subcategoryId: String?): Int {
+
+        return 0
     }
+
+    override suspend fun searchDrugs(
+        query: String,
+        categoryId: String?,
+        subcategoryId: String?,
+        filterAndOrder: OrderEnum,
+        page: Int,
+        pageSize: Int,
+    ): List<Drug> {
+        TODO("Not yet implemented")
+    }
+
 
 }

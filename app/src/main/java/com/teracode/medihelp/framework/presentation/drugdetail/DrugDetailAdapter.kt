@@ -1,25 +1,19 @@
 package com.teracode.medihelp.framework.presentation.drugdetail
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Drug
+import com.teracode.medihelp.databinding.DrugDetailItemBinding
 import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.spliceToLines
-import com.teracode.medihelp.framework.presentation.common.visible
 import com.teracode.medihelp.util.SymbolConstants.Companion.COMMON_BULLET_POINT
 import com.teracode.medihelp.util.SymbolConstants.Companion.COMMON_LINE_SEPARATOR
-import kotlinx.android.synthetic.main.drug_detail_item.view.*
 
 
 class DrugDetailAdapter(
@@ -28,7 +22,7 @@ class DrugDetailAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DrugDetail>() {
+    val callback = object : DiffUtil.ItemCallback<DrugDetail>() {
         override fun areItemsTheSame(oldItem: DrugDetail, newItem: DrugDetail): Boolean {
             return oldItem.title == newItem.title
 
@@ -41,13 +35,16 @@ class DrugDetailAdapter(
     }
 
 
-    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
+    private val differ = AsyncListDiffer(this, callback)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        val binding = DrugDetailItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return DrugDetailViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.drug_detail_item, parent, false),
+            itemBinding = binding
         )
     }
 
@@ -193,8 +190,8 @@ class DrugDetailAdapter(
 
 
     class DrugDetailViewHolder(
-        itemView: View,
-    ) : RecyclerView.ViewHolder(itemView) {
+        private val itemBinding: DrugDetailItemBinding,
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
 
         private lateinit var drugDetailItem: DrugDetail
 
@@ -209,18 +206,18 @@ class DrugDetailAdapter(
                 CardType.TEXT -> {
 
                     if (item.text != null && !item.text.isNullOrEmpty()) {
-                        setTextValue(drug_detail_item_title, item.title)
-                        setTextValue(drug_detail_item_value, item.text)
+                        setTextValue(itemBinding.drugDetailItemTitle, item.title)
+                        setTextValue(itemBinding.drugDetailItemValue, item.text)
                     } else {
-                        drug_detail_item_title.gone()
-                        drug_detail_item_value.gone()
+                        itemBinding.drugDetailItemTitle.gone()
+                        itemBinding.drugDetailItemValue.gone()
                     }
 
 
                 }
                 CardType.VIDEO -> {
-                    setTextValue(drug_detail_item_title, null)
-                    setTextValue(drug_detail_item_value, null)
+                    setTextValue(itemBinding.drugDetailItemTitle, null)
+                    setTextValue(itemBinding.drugDetailItemValue, null)
 //                    item.text?.let { videoId ->
 //                        youtube_player_view.addYouTubePlayerListener(object :
 //                            AbstractYouTubePlayerListener() {
@@ -234,17 +231,14 @@ class DrugDetailAdapter(
 //                    }
 
 
-
-
-
                 }
                 CardType.IMAGE -> {
 
 
                 }
                 CardType.TITLE -> {
-                    setTextValue(drug_detail_item_title, item.text)
-                    setTextValue(drug_detail_item_value, null)
+                    setTextValue(itemBinding.drugDetailItemTitle, item.text)
+                    setTextValue(itemBinding.drugDetailItemValue, null)
                 }
                 CardType.URL -> {
 
@@ -280,7 +274,7 @@ class DrugDetailAdapter(
     data class DrugDetail(
         var title: String? = null,
         var text: String? = null,
-        var cardType: CardType = CardType.TEXT
+        var cardType: CardType = CardType.TEXT,
     ) {
 
 

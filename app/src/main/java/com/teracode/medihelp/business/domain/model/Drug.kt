@@ -2,7 +2,7 @@ package com.teracode.medihelp.business.domain.model
 
 import android.os.Parcelable
 import com.teracode.medihelp.framework.datasource.cache.model.DrugCacheEntity
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Drug(

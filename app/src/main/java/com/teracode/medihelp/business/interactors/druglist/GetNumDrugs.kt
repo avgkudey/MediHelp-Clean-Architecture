@@ -35,7 +35,7 @@ class GetNumDrugs(
             stateEvent = stateEvent
 
         ) {
-            override suspend fun handleSuccess(resultObj: Int): DataState<DrugListViewState>? {
+            override suspend fun handleSuccess(resultObj: Int): DataState<DrugListViewState> {
 
                 val viewState = DrugListViewState(
                     numDrugsInCache = resultObj

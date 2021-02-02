@@ -5,7 +5,7 @@ import com.teracode.medihelp.business.domain.state.StateMessage
 
 sealed class SubcategoryStateEvent : StateEvent {
 
-    class GetNumSubcategoriesEvent() : SubcategoryStateEvent() {
+    class GetNumSubcategoriesEvent : SubcategoryStateEvent() {
         override fun errorInfo(): String {
             return "Error getting number of subcategories"
         }
@@ -18,7 +18,7 @@ sealed class SubcategoryStateEvent : StateEvent {
 
     }
 
-    class SearchSubcategoriesEvent() : SubcategoryStateEvent() {
+    class SearchSubcategoriesEvent : SubcategoryStateEvent() {
         override fun errorInfo(): String {
             return "Error getting subcategories"
         }

@@ -1,20 +1,20 @@
 package com.teracode.medihelp.quizmodule.framework.presentation.quizlist
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentQuizBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.SpacesItemDecoration
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
-import com.teracode.medihelp.framework.presentation.druglist.DrugListFragmentDirections
 import com.teracode.medihelp.quizmodule.business.domain.model.Quiz
 import com.teracode.medihelp.quizmodule.framework.presentation.quizlist.state.QuizListViewState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_quiz.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -24,7 +24,10 @@ const val QUIZ_LIST_STATE_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class QuizFragment : BaseFragment(R.layout.fragment_quiz), QuizAdapter.ItemInteraction {
+class QuizFragment : BaseFragment<FragmentQuizBinding>(), QuizAdapter.ItemInteraction {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuizBinding =
+        FragmentQuizBinding::inflate
 
     private val viewModel: QuizViewModel by viewModels()
 
@@ -91,7 +94,7 @@ class QuizFragment : BaseFragment(R.layout.fragment_quiz), QuizAdapter.ItemInter
     }
 
     private fun setupRecyclerView() {
-        quiz_fragment_recycler_view.apply {
+        binding.quizFragmentRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             listAdapter = QuizAdapter(
                 lifecycleOwner = viewLifecycleOwner,
@@ -154,12 +157,12 @@ class QuizFragment : BaseFragment(R.layout.fragment_quiz), QuizAdapter.ItemInter
     override fun restoreListPosition() {
 
         viewModel.getLayoutManagerState()?.let { lmState ->
-            quiz_fragment_recycler_view?.layoutManager?.onRestoreInstanceState(lmState)
+            binding.quizFragmentRecyclerView.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
 
     private fun saveLayoutManagerState() {
-        quiz_fragment_recycler_view.layoutManager?.onSaveInstanceState()?.let { lmState ->
+        binding.quizFragmentRecyclerView.layoutManager?.onSaveInstanceState()?.let { lmState ->
             viewModel.setLayoutManagerState(lmState)
         }
     }

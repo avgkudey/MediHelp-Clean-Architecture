@@ -9,7 +9,7 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.state.DataState
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.CATEGORY_LIST_SYNCED
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager.Companion.CATEGORY_LIST_SYNCED
 import com.teracode.medihelp.util.printLogD
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -37,7 +37,7 @@ class SyncCategories(
                 response = networkResult,
                 stateEvent = null
             ) {
-                override suspend fun handleSuccess(resultObj: List<Category>): DataState<List<Category>>? {
+                override suspend fun handleSuccess(resultObj: List<Category>): DataState<List<Category>> {
 
                     return DataState.data(
                         response = null,
@@ -99,7 +99,7 @@ class SyncCategories(
             response = cachedResult,
             stateEvent = null
         ) {
-            override suspend fun handleSuccess(resultObj: List<Category>): DataState<List<Category>>? {
+            override suspend fun handleSuccess(resultObj: List<Category>): DataState<List<Category>> {
 
                 return DataState.data(
                     response = null,

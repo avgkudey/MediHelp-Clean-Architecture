@@ -2,20 +2,19 @@ package com.teracode.medihelp.framework.presentation.drugdetail
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentDrugDetailBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
-import com.teracode.medihelp.framework.presentation.common.SpacesItemDecoration
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
 import com.teracode.medihelp.framework.presentation.drugdetail.state.DrugDetailViewState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_drug_detail.*
-import kotlinx.android.synthetic.main.fragment_drug_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -29,9 +28,14 @@ const val DRUG_DETAIL_STATE_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class DrugDetailFragment : BaseFragment(R.layout.fragment_drug_detail),
+class DrugDetailFragment : BaseFragment<FragmentDrugDetailBinding>(),
     DrugDetailAdapter.Interaction {
-    val args: DrugDetailFragmentArgs by navArgs()
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDrugDetailBinding =
+        FragmentDrugDetailBinding::inflate
+
+
+    private val args: DrugDetailFragmentArgs by navArgs()
 
     private var listAdapter: DrugDetailAdapter? = null
     private val viewModel: DrugDetailViewModel by viewModels()
@@ -71,9 +75,9 @@ class DrugDetailFragment : BaseFragment(R.layout.fragment_drug_detail),
 
     private fun setupSwipeRefresh() {
 
-        drug_detail_swipe_refresh_layout.setOnRefreshListener {
+        binding.drugDetailSwipeRefreshLayout.setOnRefreshListener {
 
-            drug_detail_swipe_refresh_layout.isRefreshing = false
+            binding.drugDetailSwipeRefreshLayout.isRefreshing = false
             viewModel.refreshSearchQuery()
         }
 
@@ -156,13 +160,13 @@ class DrugDetailFragment : BaseFragment(R.layout.fragment_drug_detail),
     }
 
     private fun saveLayoutManagerState() {
-        drug_detail_recyclerview.layoutManager?.onSaveInstanceState()?.let { lmState ->
+        binding.drugDetailRecyclerview.layoutManager?.onSaveInstanceState()?.let { lmState ->
             viewModel.setLayoutManagerState(lmState)
         }
     }
 
     private fun setupRecyclerView() {
-        drug_detail_recyclerview.apply {
+        binding.drugDetailRecyclerview.apply {
             layoutManager = LinearLayoutManager(activity)
 
 //            addItemDecoration(SpacesItemDecoration(8))
@@ -182,14 +186,14 @@ class DrugDetailFragment : BaseFragment(R.layout.fragment_drug_detail),
 
     override fun restoreListPosition() {
         viewModel.getLayoutManagerState()?.let { lmState ->
-            drug_detail_recyclerview?.layoutManager?.onRestoreInstanceState(lmState)
+            binding.drugDetailRecyclerview.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-        listAdapter=null
+        listAdapter = null
     }
 
 }

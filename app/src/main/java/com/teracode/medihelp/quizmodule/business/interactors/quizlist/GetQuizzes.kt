@@ -26,7 +26,7 @@ class GetQuizzes(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<QuizListViewState>? {
+            override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<QuizListViewState> {
 
                 var message = GET_QUIZZES_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()

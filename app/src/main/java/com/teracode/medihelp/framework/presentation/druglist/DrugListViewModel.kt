@@ -97,8 +97,6 @@ constructor(
     }
 
     private fun setDrugListData(drugList: ArrayList<Drug>) {
-
-        Log.d(TAG, "setDrugListData: ${drugList.toString()}")
         val update = getCurrentViewStateOrNew()
         update.drugList = drugList
         setViewState(update)

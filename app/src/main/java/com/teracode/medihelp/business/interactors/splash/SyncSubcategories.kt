@@ -9,7 +9,7 @@ import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.DataState
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.SUBCATEGORY_LIST_SYNCED
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager.Companion.SUBCATEGORY_LIST_SYNCED
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -36,7 +36,7 @@ class SyncSubcategories(
                 response = networkResult,
                 stateEvent = null
             ) {
-                override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<List<Subcategory>>? {
+                override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<List<Subcategory>> {
 
                     return DataState.data(
                         response = null,
@@ -104,7 +104,7 @@ class SyncSubcategories(
             response = cachedResult,
             stateEvent = null
         ) {
-            override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<List<Subcategory>>? {
+            override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<List<Subcategory>> {
 
                 return DataState.data(
                     response = null,

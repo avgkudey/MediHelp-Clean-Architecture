@@ -40,16 +40,12 @@ constructor(
             .get()
             .addOnFailureListener {
                 exception=it
-                Log.d("syncNetworkDru", "addOnFailureListener: ${it}")
             }.addOnCompleteListener { task->
                 Log.d("syncNetworkDru", "addOnCompleteListener: ${task.exception}")
 
             }
             .await()
             .toObjects(DrugNetworkEntity::class.java).let {
-
-
-                Log.d("syncNetworkDru", "getAllDrugs toObjects: ${it}")
 
                 networkMapper.entityListToDrugList(it)
             }

@@ -2,7 +2,7 @@ package com.teracode.medihelp.framework.presentation.auth.state
 
 import android.os.Parcelable
 import com.teracode.medihelp.business.domain.state.ViewState
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class AuthViewState(

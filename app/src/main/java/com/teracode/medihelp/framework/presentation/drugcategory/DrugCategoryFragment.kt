@@ -2,8 +2,6 @@ package com.teracode.medihelp.framework.presentation.drugcategory
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,37 +10,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
-import com.teracode.medihelp.framework.datasource.cache.abstraction.CategoryDaoService
-import com.teracode.medihelp.framework.datasource.cache.implementation.CategoryDaoServiceImpl
-import com.teracode.medihelp.framework.datasource.network.implementation.CategoryFirestoreServiceImpl
-import com.teracode.medihelp.framework.datasource.network.implementation.CategoryFirestoreServiceImpl.Companion.CATEGORY_COLLECTION
-import com.teracode.medihelp.framework.datasource.network.implementation.DrugFirestoreServiceImpl.Companion.DRUGS_COLLECTION
-import com.teracode.medihelp.framework.datasource.network.model.CategoryNetworkEntity
-import com.teracode.medihelp.framework.datasource.network.model.DrugNetworkEntity
-import com.teracode.medihelp.framework.datasource.network.model.SubcategoryNetworkEntity
+import com.teracode.medihelp.databinding.FragmentDrugCategoryBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.SpacesItemDecoration
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
 import com.teracode.medihelp.framework.presentation.drugcategory.state.DrugCategoryViewState
 import com.teracode.medihelp.framework.presentation.druglist.DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY
-import com.teracode.medihelp.framework.presentation.druglist.DrugListAdapter
 import com.teracode.medihelp.framework.presentation.subcategorylist.SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY
-import com.teracode.medihelp.util.cLog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_drug_category.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
 private const val TAG = "DrugCategoryFragment"
 const val CATEGORY_LIST_STATE_BUNDLE_KEY =
@@ -52,8 +32,11 @@ const val CATEGORY_LIST_STATE_BUNDLE_KEY =
 @FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
+class DrugCategoryFragment : BaseFragment<FragmentDrugCategoryBinding>(),
     DrugCategoryAdapter.ItemInteraction {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDrugCategoryBinding =
+        FragmentDrugCategoryBinding::inflate
 
     private val viewModel: DrugCategoryViewModel by viewModels()
 
@@ -127,13 +110,12 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
     }
 
 
-
     private fun setupUI() {
         view?.hideKeyboard()
     }
 
     private fun setupRecyclerView() {
-        category_fragment_recyclerview.apply {
+        binding.categoryFragmentRecyclerview.apply {
             layoutManager = GridLayoutManager(context, ROW_COUNT)
             listAdapter = DrugCategoryAdapter(
                 lifecycleOwner = viewLifecycleOwner,
@@ -228,12 +210,12 @@ class DrugCategoryFragment : BaseFragment(R.layout.fragment_drug_category),
     override fun restoreListPosition() {
 
         viewModel.getLayoutManagerState()?.let { lmState ->
-            category_fragment_recyclerview?.layoutManager?.onRestoreInstanceState(lmState)
+            binding.categoryFragmentRecyclerview.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
 
     private fun saveLayoutManagerState() {
-        category_fragment_recyclerview.layoutManager?.onSaveInstanceState()?.let { lmState ->
+        binding.categoryFragmentRecyclerview.layoutManager?.onSaveInstanceState()?.let { lmState ->
             viewModel.setLayoutManagerState(lmState)
         }
     }

@@ -45,7 +45,7 @@ class BubbleScroll : LinearLayout {
     }
 
 
-    private fun setupCallbacks() = recyclerView?.addOnScrollListener(onScrollListener)
+    private fun setupCallbacks() = recyclerView.addOnScrollListener(onScrollListener)
 
     constructor(context: Context) : super(context) {
         val root = LayoutInflater.from(context).inflate(R.layout.bubble_scroll, this, true)

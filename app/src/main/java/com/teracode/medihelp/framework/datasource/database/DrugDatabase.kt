@@ -11,13 +11,14 @@ import com.teracode.medihelp.quizmodule.framework.datasource.database.QuestionDa
 import com.teracode.medihelp.quizmodule.framework.datasource.database.QuizDao
 
 @Database(
-    entities = arrayOf(
+    entities = [
         DrugCacheEntity::class,
         CategoryCacheEntity::class,
         SubcategoryCacheEntity::class,
         QuizCacheEntity::class,
-        QuestionCacheEntity::class,
-    ), version = 3
+        QuestionCacheEntity::class
+    ],
+    version = 3
 )
 abstract class DrugDatabase : RoomDatabase() {
 

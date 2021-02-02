@@ -1,5 +1,6 @@
 package com.teracode.medihelp.framework.presentation.common
 
+import android.text.Editable
 import java.util.*
 
 
@@ -11,23 +12,37 @@ fun String.spliceToLines(delimiter: String, bullet: String = "", sort: Boolean =
 
 
 
-    return if (this.contains(delimiter)) {
-        var sb: String = ""
-        var arr = this.split(delimiter)
-        if (sort) {
-            arr = arr.sorted()
+    return when {
+        this.contains(delimiter) -> {
+            var sb: String = ""
+            var arr = this.split(delimiter)
+            if (sort) {
+                arr = arr.sorted()
+            }
+
+            for (str in arr) {
+                sb += (updatedBullet + str + "\n")
+            }
+
+            sb
+
         }
-
-        for (str in arr) {
-            sb += (updatedBullet + str + "\n")
+        this.isNotEmpty() -> {
+            updatedBullet + this
         }
-
-        sb
-
-    } else if (this.isNotEmpty()) {
-        updatedBullet + this
-    } else {
-        this
+        else -> {
+            this
+        }
     }
 
 }
+
+fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
+
+
+
+
+
+
+

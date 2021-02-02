@@ -73,7 +73,7 @@ constructor(
 
     override suspend fun getAllQuestionsByQuiz(quizId: String): List<Question> {
         val result = dao.getAllQuestionsByQuiz(quizId = quizId)
-        printLogD("viewState.questionList", "getAllQuestionsByQuiz DAO SERVICE ${result}")
+        printLogD("viewState.questionList", "getAllQuestionsByQuiz DAO SERVICE $result")
         return mapper.entityListToQuestionList(entities = dao.getAllQuestionsByQuiz(quizId = quizId))
     }
 

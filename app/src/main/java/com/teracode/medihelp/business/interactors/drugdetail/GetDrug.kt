@@ -32,7 +32,7 @@ class GetDrug(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: Drug): DataState<DrugDetailViewState>? {
+            override suspend fun handleSuccess(resultObj: Drug): DataState<DrugDetailViewState> {
                 var message: String? = SEARCH_DRUGS_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()
                 if (resultObj == null) {

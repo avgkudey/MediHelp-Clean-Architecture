@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.viewbinding.ViewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.input.input
@@ -23,18 +25,24 @@ import com.teracode.medihelp.util.TodoCallback
 
 
 private const val TAG = "BaseActivity"
-abstract class BaseActivity:AppCompatActivity(),UIController {
+
+abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), UIController {
 
     private var dialogInView: MaterialDialog? = null
+    lateinit var binding: VB
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Medihelp)
+        binding = getViewBinding()
+
+        setContentView(binding.root)
     }
 
+    abstract fun getViewBinding(): VB
 
-    abstract override  fun displayProgressBar(isDisplayed: Boolean)
+    abstract override fun displayProgressBar(isDisplayed: Boolean)
 
     override fun hideSoftKeyboard() {
         if (currentFocus != null) {
@@ -64,9 +72,14 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
         }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     override fun onResponseReceived(
         response: Response,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ) {
 
 
@@ -121,7 +134,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
         message: String,
         snackBarUndoCallback: SnackbarUndoCallback?,
         onDismissCallback: TodoCallback?,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ) {
         val snackBar = Snackbar.make(
             findViewById(R.id.main_container),
@@ -144,7 +157,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
 
     private fun displayDialog(
         response: Response,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ) {
         response.message?.let { message ->
 
@@ -179,6 +192,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
             }
         } ?: stateMessageCallback.removeMessageFromStack()
     }
+
     override fun onPause() {
         super.onPause()
         if (dialogInView != null) {
@@ -190,7 +204,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
 
     private fun displaySuccessDialog(
         message: String?,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ): MaterialDialog {
         return MaterialDialog(this)
             .show {
@@ -209,7 +223,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
 
     private fun displayErrorDialog(
         message: String?,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ): MaterialDialog {
         return MaterialDialog(this)
             .show {
@@ -229,7 +243,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
 
     private fun displayInfoDialog(
         message: String?,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ): MaterialDialog {
         return MaterialDialog(this)
             .show {
@@ -249,7 +263,7 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
     private fun areYouSureDialog(
         message: String,
         callback: AreYouSureCallback,
-        stateMessageCallback: StateMessageCallback
+        stateMessageCallback: StateMessageCallback,
     ): MaterialDialog {
         return MaterialDialog(this)
             .show {
@@ -273,14 +287,15 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
     }
 
 
-    override fun isStoragePermissionGranted(): Boolean{
+    override fun isStoragePermissionGranted(): Boolean {
         if (
             ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED  ) {
+            != PackageManager.PERMISSION_GRANTED
+        ) {
 
 
             ActivityCompat.requestPermissions(this,
@@ -297,4 +312,5 @@ abstract class BaseActivity:AppCompatActivity(),UIController {
             return true
         }
     }
+
 }

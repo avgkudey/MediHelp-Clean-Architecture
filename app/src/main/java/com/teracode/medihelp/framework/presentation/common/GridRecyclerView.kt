@@ -16,7 +16,7 @@ class GridRecyclerView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         if (layout is GridLayoutManager) {
             super.setLayoutManager(layout)
         } else {
-            throw  ClassCastException("You should only use a GridLayoutManager with GridRecyclerView.");
+            throw  ClassCastException("You should only use a GridLayoutManager with GridRecyclerView.")
         }
     }
 

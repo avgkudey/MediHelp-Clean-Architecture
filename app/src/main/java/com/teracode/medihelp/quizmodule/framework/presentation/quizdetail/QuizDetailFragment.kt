@@ -1,8 +1,9 @@
 package com.teracode.medihelp.quizmodule.framework.presentation.quizdetail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,14 +11,13 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentQuizDetailBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
-import com.teracode.medihelp.framework.presentation.subcategorylist.SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY
 import com.teracode.medihelp.quizmodule.business.domain.model.Quiz
 import com.teracode.medihelp.quizmodule.framework.presentation.quizdetail.state.QuizDetailViewState
 import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.START_QUIZ_SELECTED_QUIZ_BUNDLE_KEY
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_quiz_detail.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -28,7 +28,9 @@ const val QUIZ_DETAIL_STATE_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class QuizDetailFragment : BaseFragment(R.layout.fragment_quiz_detail) {
+class QuizDetailFragment : BaseFragment<FragmentQuizDetailBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuizDetailBinding =
+        FragmentQuizDetailBinding::inflate
     private val args: QuizDetailFragmentArgs by navArgs()
     private val viewModel: QuizDetailViewModel by viewModels()
 
@@ -52,8 +54,8 @@ class QuizDetailFragment : BaseFragment(R.layout.fragment_quiz_detail) {
 
     private fun setupSwipeRefresh() {
 
-        quiz_detail_swipe_container.setOnRefreshListener {
-            quiz_detail_swipe_container.isRefreshing = false
+        binding.quizDetailSwipeContainer.setOnRefreshListener {
+            binding.quizDetailSwipeContainer.isRefreshing = false
             viewModel.refreshSearchQuery()
         }
     }
@@ -140,16 +142,16 @@ class QuizDetailFragment : BaseFragment(R.layout.fragment_quiz_detail) {
     }
 
     private fun setQuizDetails(quiz: Quiz) {
-        quiz_detail_title.text = quiz.name
-        quiz_detail_description.text = quiz.description
-        quiz_detail_difficulty_text.text = quiz.level
-        quiz_detail_questions_text.text = quiz.questions.toString()
+        binding.quizDetailTitle.text = quiz.name
+        binding.quizDetailDescription.text = quiz.description
+        binding.quizDetailDifficultyText.text = quiz.level
+        binding.quizDetailQuestionsText.text = quiz.questions.toString()
         context?.let {
             Glide.with(it).load("https://firebase.google.com/images/social.png")
                 .placeholder(R.drawable.placeholder_image)
-                .into(quiz_detail_image)
+                .into(binding.quizDetailImage)
         }
-        quiz_detail_start_btn.setOnClickListener {
+        binding.quizDetailStartBtn.setOnClickListener {
             navToQuizStartFragment()
 
         }

@@ -237,16 +237,16 @@ constructor(
         val question = getCurrentViewStateOrNew().selectedQuestion!!
         return when (question.answer) {
             "option_a" -> {
-                answer.equals(question.option_a)
+                answer == question.option_a
             }
             "option_b" -> {
-                answer.equals(question.option_b)
+                answer == question.option_b
             }
             "option_c" -> {
-                answer.equals(question.option_c)
+                answer == question.option_c
             }
             "option_d" -> {
-                answer.equals(question.option_d)
+                answer == question.option_d
             }
             else -> false
         }

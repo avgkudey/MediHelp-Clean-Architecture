@@ -1,18 +1,16 @@
 package com.teracode.medihelp.framework.presentation.subcategorylist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Subcategory
+import com.teracode.medihelp.databinding.SubcategoryListItemBinding
 import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import com.teracode.medihelp.framework.presentation.common.invisible
-import kotlinx.android.synthetic.main.subcategory_list_item.view.*
 
 class SubcategoryListAdapter(
     private val interaction: Interaction? = null,
@@ -37,9 +35,12 @@ class SubcategoryListAdapter(
     private val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        val binding = SubcategoryListItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return SubcategoryViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.subcategory_list_item, parent, false),
+            itemBinding = binding,
             interaction = interaction,
             lifecycleOwner = lifecycleOwner
 
@@ -69,10 +70,10 @@ class SubcategoryListAdapter(
 
 
     class SubcategoryViewHolder(
-        itemView: View,
+        private val  itemBinding:  SubcategoryListItemBinding,
         private val interaction: Interaction?,
         private val lifecycleOwner: LifecycleOwner,
-    ) : RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
         private lateinit var subcategory: Subcategory
         fun bind(item: Subcategory) = with(itemView) {
             setOnClickListener {
@@ -81,7 +82,7 @@ class SubcategoryListAdapter(
 
             subcategory = item
 
-            setTextValue(subcategory_item_title, item.title)
+            setTextValue(itemBinding.subcategoryItemTitle, item.title)
         }
 
         private fun setTextValue(textView: TextView?, value: String?) {

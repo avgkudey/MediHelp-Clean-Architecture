@@ -10,7 +10,6 @@ import com.teracode.medihelp.business.interactors.splash.SyncCounts
 import com.teracode.medihelp.business.interactors.splash.SyncDrugs
 import com.teracode.medihelp.business.interactors.splash.SyncSubcategories
 import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager
 import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuestions
 import com.teracode.medihelp.quizmodule.business.interactors.splash.SyncQuizzes
 import dagger.Module
@@ -24,26 +23,7 @@ import javax.inject.Singleton
 object SyncManagerModule {
 
 
-    @Provides
-    fun provideDrugsNetworkSyncManager(
-        syncDrugs: SyncDrugs,
-        syncCategories: SyncCategories,
-        syncCounts: SyncCounts,
-        syncSubcategories: SyncSubcategories,
-        sharedPreferences: SharedPreferences,
-        editor: SharedPreferences.Editor,
-        remoteConfig: FirebaseRemoteConfig,
-    ): DrugsNetworkSyncManager {
-        return DrugsNetworkSyncManager(
-            syncDrugs = syncDrugs,
-            syncCategory = syncCategories,
-            syncSubcategory = syncSubcategories,
-            syncCounts = syncCounts,
-            sharedPreferences = sharedPreferences,
-            remoteConfig = remoteConfig,
-            editor = editor
-        )
-    }
+
 
     @Provides
     fun provideDataNetworkSyncManager(

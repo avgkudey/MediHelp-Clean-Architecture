@@ -1,23 +1,24 @@
 package com.teracode.medihelp.framework.presentation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teracode.medihelp.R
+import com.teracode.medihelp.databinding.ActivityMainBinding
 import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.visible
 import com.teracode.medihelp.framework.presentation.drugdetail.DrugDetailFragment
 import com.teracode.medihelp.framework.presentation.druglist.DrugListFragment
 import com.teracode.medihelp.framework.presentation.subcategorylist.SubcategoryFragment
-import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.QuizStartFragment
 import com.teracode.medihelp.quizmodule.framework.presentation.quizdetail.QuizDetailFragment
+import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.QuizStartFragment
 import com.teracode.medihelp.util.BOTTOM_NAV_BACKSTACK_KEY
 import com.teracode.medihelp.util.BottomNavController
 import com.teracode.medihelp.util.setUpNavigation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -26,8 +27,10 @@ private const val TAG = "MainActivity"
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChanged,
+class MainActivity : BaseActivity<ActivityMainBinding>(),
+    BottomNavController.OnNavigationGraphChanged,
     BottomNavController.OnNavigationReselectedListener {
+
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -45,8 +48,6 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
     override fun onBackPressed() = bottomNavController.onBackPressed()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setTheme(R.style.Theme_Medihelp)
-        setContentView(R.layout.activity_main)
         setupBottomNavigationView(savedInstanceState)
     }
 
@@ -64,7 +65,7 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item?.itemId) {
+        when (item.itemId) {
             android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
@@ -73,9 +74,9 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
 
     override fun displayProgressBar(isDisplayed: Boolean) {
         if (isDisplayed)
-            main_progress_bar.visible()
+            binding.mainProgressBar.visible()
         else
-            main_progress_bar.gone()
+            binding.mainProgressBar.gone()
     }
 
 
@@ -131,5 +132,7 @@ class MainActivity : BaseActivity(), BottomNavController.OnNavigationGraphChange
 //        finish()
 //        (application as BaseApplication).releaseMainComponent()
     }
+
+    override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
 }

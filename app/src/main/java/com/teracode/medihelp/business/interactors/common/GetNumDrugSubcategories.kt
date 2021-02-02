@@ -30,7 +30,7 @@ class GetNumDrugSubcategories(
                 stateEvent = stateEvent
 
             ) {
-                override suspend fun handleSuccess(resultObj: Int): DataState<SubcategoryListViewState>? {
+                override suspend fun handleSuccess(resultObj: Int): DataState<SubcategoryListViewState> {
 
                     val viewState = SubcategoryListViewState(
                         numSubcategoriesInCache = resultObj

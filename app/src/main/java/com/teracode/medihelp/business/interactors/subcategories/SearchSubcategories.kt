@@ -48,7 +48,7 @@ class SearchSubcategories(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<SubcategoryListViewState>? {
+            override suspend fun handleSuccess(resultObj: List<Subcategory>): DataState<SubcategoryListViewState> {
                 var message: String? = SEARCH_SUBCATEGORIES_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()
                 if (resultObj.isEmpty()) {

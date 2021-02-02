@@ -1,33 +1,26 @@
 package com.teracode.medihelp.framework.presentation.druglist
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.os.bundleOf
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Drug
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentDrugListBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
-import com.teracode.medihelp.framework.presentation.drugdetail.DRUG_DETAIL_SELECTED_DRUG_ID_BUNDLE_KEY
 import com.teracode.medihelp.framework.presentation.druglist.state.DrugListViewState
-import com.teracode.medihelp.framework.presentation.subcategorylist.SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY
-import com.trendyol.bubblescrollbarlib.BubbleTextProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_drug_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.tasks.await
 
-private const val TAG = "DrugListFragment"
 const val DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY =
     "com.teracode.medihelp.framework.presentation.druglist.selectedCategory"
 const val DRUG_LIST_SELECTED_SUBCATEGORY_BUNDLE_KEY =
@@ -37,8 +30,11 @@ const val DRUG_LIST_STATE_BUNDLE_KEY = "com.teracode.medihelp.framework.presenta
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHelperAdapter,
+class DrugListFragment : BaseFragment<FragmentDrugListBinding>(), ItemTouchHelperAdapter,
     DrugListAdapter.Interaction {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDrugListBinding =
+        FragmentDrugListBinding::inflate
 
     val viewModel: DrugListViewModel by viewModels()
     private var listAdapter: DrugListAdapter? = null
@@ -46,10 +42,6 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setupChannel()
-    }
-
-    private fun clearArgs() {
-        arguments?.clear()
     }
 
 
@@ -114,9 +106,9 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
     private fun setupSwipeRefresh() {
 
-        drug_list_swipe_refresh.setOnRefreshListener {
+        binding.drugListSwipeRefresh.setOnRefreshListener {
 
-            drug_list_swipe_refresh.isRefreshing = false
+            binding.drugListSwipeRefresh.isRefreshing = false
             startNewSearch()
         }
 
@@ -133,33 +125,11 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
             if (viewState != null) {
                 viewState.drugList?.let { drugList ->
-                    Log.d("DRUGLISTFRAC", "subscribeObservers: drugList ${drugList}")
-                    Log.d(
-                        "DRUGLISTFRAC",
-                        "subscribeObservers: isPaginationExhausted ${viewModel.isPaginationExhausted()}"
-                    )
-                    Log.d(
-                        "DRUGLISTFRAC",
-                        "subscribeObservers: getDrugListSize ${viewModel.getDrugListSize()}"
-                    )
-                    Log.d(
-                        "DRUGLISTFRAC",
-                        "subscribeObservers: getNumDrugsInCache ${viewModel.getNumDrugsInCache()}"
-                    )
+
 
                     if (drugList.isNotEmpty() && viewModel.isPaginationExhausted() && !viewModel.isQueryExhausted()) {
-                        Log.d(
-                            "DRUGLISTFRAC",
-                            "subscribeObservers: isQueryExhausted ${viewModel.isQueryExhausted()}"
-                        )
                         viewModel.setQueryExhausted(true)
-                        Log.d(
-                            "DRUGLISTFRAC",
-                            "subscribeObservers: viewModel.setQueryExhausted(true)"
-                        )
                     }
-
-
                     listAdapter?.submitList(drugList)
                     listAdapter?.notifyDataSetChanged()
 
@@ -202,7 +172,7 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
     }
 
     private fun setupRecyclerView() {
-        recycler_view.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             itemTouchHelper = ItemTouchHelper(
                 DrugItemTouchHelperCallback(
@@ -221,9 +191,6 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
-
-                    Log.d("DRUGLISTFRAC", "listAdapter?.itemCount ${listAdapter?.itemCount}")
-                    Log.d("DRUGLISTFRAC", "lastPosition ${lastPosition}")
 
                     if (lastPosition == listAdapter?.itemCount?.minus(1)) {
                         viewModel.nextPage()
@@ -256,7 +223,7 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
     override fun restoreListPosition() {
         viewModel.getLayoutManagerState()?.let { lmState ->
-            recycler_view?.layoutManager?.onRestoreInstanceState(lmState)
+            binding.recyclerView.layoutManager?.onRestoreInstanceState(lmState)
         }
 
     }
@@ -274,7 +241,7 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
 
 
     private fun saveLayoutManagerState() {
-        recycler_view.layoutManager?.onSaveInstanceState()?.let { lmState ->
+        binding.recyclerView.layoutManager?.onSaveInstanceState()?.let { lmState ->
             viewModel.setLayoutManagerState(lmState)
         }
     }
@@ -291,63 +258,6 @@ class DrugListFragment : BaseFragment(R.layout.fragment_drug_list), ItemTouchHel
         itemTouchHelper = null
 
     }
-
-    suspend fun syncSub(drugs: List<Drug>) {
-        val firestore = FirebaseFirestore.getInstance()
-
-        for (drug in drugs) {
-
-            val id = drug.id
-            val title = drug.title
-
-            val items = firestore.collection("subcategories").get().await()
-                .toObjects(SubcategoryNetworkSyncEntity::class.java)
-
-            for (item in items) {
-
-                if (item.root.equals(title, ignoreCase = true)) {
-
-                    val cat = hashMapOf(
-
-
-                        "id" to item.id,
-                        "title" to item.title,
-                        "categoryId" to id,
-                        "image" to item.image,
-                        "url" to item.link,
-                        "description" to item.description,
-
-
-                        )
-
-
-
-
-
-                    firestore.collection("subcategories").document(item.id).set(cat)
-                        .addOnFailureListener {
-                            Log.d(TAG, "syncSub: ${it.message}")
-                        }.addOnCompleteListener {
-                            Log.d(TAG, "syncSub: complete ${item.title} ${item.id}")
-                        }
-                }
-
-            }
-
-
-        }
-
-    }
-
-
-    data class SubcategoryNetworkSyncEntity(
-        var id: String = "",
-        var title: String = "",
-        var image: String? = "",
-        var root: String? = "",
-        var link: String? = "",
-        var description: String? = "",
-    )
 
 
 }

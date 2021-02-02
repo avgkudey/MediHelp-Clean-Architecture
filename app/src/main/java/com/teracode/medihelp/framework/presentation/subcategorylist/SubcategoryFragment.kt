@@ -1,29 +1,27 @@
 package com.teracode.medihelp.framework.presentation.subcategorylist
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Category
 import com.teracode.medihelp.business.domain.model.Subcategory
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentSubcategoryBinding
 import com.teracode.medihelp.framework.presentation.common.BaseFragment
 import com.teracode.medihelp.framework.presentation.common.hideKeyboard
 import com.teracode.medihelp.framework.presentation.druglist.DRUG_LIST_SELECTED_CATEGORY_BUNDLE_KEY
 import com.teracode.medihelp.framework.presentation.druglist.DRUG_LIST_SELECTED_SUBCATEGORY_BUNDLE_KEY
 import com.teracode.medihelp.framework.presentation.subcategorylist.state.SubcategoryListViewState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_drug_list.*
-import kotlinx.android.synthetic.main.fragment_subcategory.*
-import kotlinx.android.synthetic.main.fragment_subcategory.recycler_view
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.tasks.await
 
 
 const val SUBCATEGORY_LIST_STATE_BUNDLE_KEY =
@@ -35,8 +33,11 @@ const val SUBCATEGORY_LIST_SELECTED_CATEGORY_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class SubcategoryFragment : BaseFragment(R.layout.fragment_subcategory),
+class SubcategoryFragment : BaseFragment<FragmentSubcategoryBinding>(),
     SubcategoryListAdapter.Interaction {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSubcategoryBinding =
+        FragmentSubcategoryBinding::inflate
 
     private val viewModel: SubcategoryViewModel by viewModels()
 
@@ -100,7 +101,7 @@ class SubcategoryFragment : BaseFragment(R.layout.fragment_subcategory),
 
     override fun restoreListPosition() {
         viewModel.getLayoutManagerState()?.let { lmState ->
-            recycler_view?.layoutManager?.onRestoreInstanceState(lmState)
+            binding.recyclerView.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
 
@@ -110,7 +111,7 @@ class SubcategoryFragment : BaseFragment(R.layout.fragment_subcategory),
     }
 
     private fun setupRecyclerView() {
-        recycler_view.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
 
             listAdapter = SubcategoryListAdapter(
@@ -232,7 +233,7 @@ class SubcategoryFragment : BaseFragment(R.layout.fragment_subcategory),
     }
 
     private fun saveLayoutManagerState() {
-        recycler_view.layoutManager?.onSaveInstanceState()?.let { lmState ->
+        binding.recyclerView.layoutManager?.onSaveInstanceState()?.let { lmState ->
             viewModel.setLayoutManagerState(lmState)
         }
     }

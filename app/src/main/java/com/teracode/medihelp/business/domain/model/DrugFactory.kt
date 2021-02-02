@@ -7,7 +7,7 @@ import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
 @Singleton
-class DrugFactory()
+class DrugFactory
  {
 
     fun createSingleDrug(

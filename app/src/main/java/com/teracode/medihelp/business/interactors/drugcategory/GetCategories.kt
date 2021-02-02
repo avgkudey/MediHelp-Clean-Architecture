@@ -26,7 +26,7 @@ class GetCategories(
             response = cacheResult,
             stateEvent = stateEvent
         ) {
-            override suspend fun handleSuccess(resultObj: List<Category>): DataState<DrugCategoryViewState>? {
+            override suspend fun handleSuccess(resultObj: List<Category>): DataState<DrugCategoryViewState> {
 
                 var message = GET_CATEGORIES_SUCCESS
                 var uiComponentType: UIComponentType = UIComponentType.None()

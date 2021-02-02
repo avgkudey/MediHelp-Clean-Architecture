@@ -6,7 +6,7 @@ import com.teracode.medihelp.business.data.network.ApiResponseHandler
 import com.teracode.medihelp.business.data.util.safeApiCall
 import com.teracode.medihelp.business.data.util.safeCacheCall
 import com.teracode.medihelp.business.domain.state.DataState
-import com.teracode.medihelp.framework.presentation.splash.DrugsNetworkSyncManager.Companion.QUIZ_LIST_SYNCED
+import com.teracode.medihelp.framework.presentation.datasync.DataNetworkSyncManager.Companion.QUIZ_LIST_SYNCED
 import com.teracode.medihelp.quizmodule.business.data.cache.abstraction.QuizCacheDataSource
 import com.teracode.medihelp.quizmodule.business.data.network.abstraction.QuizNetworkDataSource
 import com.teracode.medihelp.quizmodule.business.domain.model.Quiz
@@ -37,7 +37,7 @@ class SyncQuizzes(
                 response = networkResult,
                 stateEvent = null
             ) {
-                override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<List<Quiz>>? {
+                override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<List<Quiz>> {
 
                     return DataState.data(
                         response = null,
@@ -101,7 +101,7 @@ class SyncQuizzes(
             response = cachedResult,
             stateEvent = null
         ) {
-            override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<List<Quiz>>? {
+            override suspend fun handleSuccess(resultObj: List<Quiz>): DataState<List<Quiz>> {
 
                 return DataState.data(
                     response = null,

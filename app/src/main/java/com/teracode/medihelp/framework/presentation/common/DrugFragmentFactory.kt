@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.teracode.medihelp.framework.presentation.druglist.DrugListFragment
-import com.teracode.medihelp.framework.presentation.splash.SplashFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
@@ -21,10 +20,6 @@ class DrugFragmentFactory : FragmentFactory() {
                 fragment
             }
 
-            SplashFragment::class.java.name ->{
-                val fragment=SplashFragment()
-                fragment
-            }
 
             else -> {
                 super.instantiate(classLoader, className)

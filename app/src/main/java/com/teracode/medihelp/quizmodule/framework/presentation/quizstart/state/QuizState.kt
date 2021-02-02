@@ -1,7 +1,7 @@
 package com.teracode.medihelp.quizmodule.framework.presentation.quizstart.state
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 sealed class QuizState : Parcelable {

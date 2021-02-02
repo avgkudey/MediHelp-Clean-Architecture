@@ -1,19 +1,17 @@
 package com.teracode.medihelp.framework.presentation.druglist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.model.Drug
+import com.teracode.medihelp.databinding.DrugListItemBinding
 import com.teracode.medihelp.framework.presentation.common.capitalizeWords
 import com.teracode.medihelp.framework.presentation.common.gone
 import com.teracode.medihelp.framework.presentation.common.invisible
-import kotlinx.android.synthetic.main.drug_list_item.view.*
 
 class DrugListAdapter(
     private val interaction: Interaction? = null,
@@ -22,7 +20,7 @@ class DrugListAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Drug>() {
+    val callback = object : DiffUtil.ItemCallback<Drug>() {
         override fun areItemsTheSame(oldItem: Drug, newItem: Drug): Boolean {
             return oldItem.id == newItem.id
 
@@ -35,12 +33,15 @@ class DrugListAdapter(
     }
 
 
-    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
+    private val differ = AsyncListDiffer(this, callback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        val binding = DrugListItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return DrugViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.drug_list_item, parent, false),
+            itemBinding = binding,
             interaction = interaction,
             lifecycleOwner = lifecycleOwner
 
@@ -71,10 +72,10 @@ class DrugListAdapter(
 
 
     class DrugViewHolder(
-        itemView: View,
+        private val  itemBinding:  DrugListItemBinding,
         private val interaction: Interaction?,
         private val lifecycleOwner: LifecycleOwner,
-    ) : RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
         private lateinit var drug: Drug
         fun bind(item: Drug) = with(itemView) {
             setOnClickListener {
@@ -83,8 +84,8 @@ class DrugListAdapter(
 
             drug = item
 
-            setTextValue(drug_item_title, item.title)
-            setTradeName(item.trade_name, drug_list_item_trade_name)
+            setTextValue(itemBinding.drugItemTitle, item.title)
+            setTradeName(item.trade_name, itemBinding.drugListItemTradeName)
 
         }
 

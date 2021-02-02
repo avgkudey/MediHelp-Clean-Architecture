@@ -2,13 +2,16 @@ package com.teracode.medihelp.quizmodule.framework.presentation.quizstart
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import com.teracode.medihelp.R
 import com.teracode.medihelp.business.domain.state.StateMessageCallback
+import com.teracode.medihelp.databinding.FragmentQuizStartBinding
 import com.teracode.medihelp.framework.presentation.common.*
 import com.teracode.medihelp.quizmodule.business.domain.model.Question
 import com.teracode.medihelp.quizmodule.business.domain.model.Quiz
@@ -16,7 +19,6 @@ import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.state.Q
 import com.teracode.medihelp.quizmodule.framework.presentation.quizstart.state.QuizState
 import com.teracode.medihelp.util.printLogD
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_quiz_start.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -30,7 +32,10 @@ const val QUIZ_START_STATE_BUNDLE_KEY =
 @ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
-class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
+class QuizStartFragment : BaseFragment<FragmentQuizStartBinding>() {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuizStartBinding =
+        FragmentQuizStartBinding::inflate
 
     private var canAnswer: Boolean = false
     private val viewModel: QuizStartViewModel by viewModels()
@@ -88,11 +93,7 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
                     setQuizData(quiz)
                 }
 
-                viewState.showNextBtn.let { value ->
-
-                    showNextBtn(value)
-
-                }
+                showNextBtn(viewState.showNextBtn)
                 viewState.canAnswer.let { value ->
                     canAnswer = value
                 }
@@ -202,23 +203,23 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
 
 
             printLogD("setupButtonListeners", "setupButtonListeners")
-            quiz_start_option_one.setOnClickListener {
-                selectAnswer(quiz_start_option_one)
+            binding.quizStartOptionOne.setOnClickListener {
+                selectAnswer(binding.quizStartOptionOne)
             }
 
-            quiz_start_option_two.setOnClickListener {
-                selectAnswer(quiz_start_option_two)
+            binding.quizStartOptionTwo.setOnClickListener {
+                selectAnswer(binding.quizStartOptionTwo)
             }
 
-            quiz_start_option_three.setOnClickListener {
-                selectAnswer(quiz_start_option_three)
+            binding.quizStartOptionThree.setOnClickListener {
+                selectAnswer(binding.quizStartOptionThree)
             }
 
-            quiz_start_option_four.setOnClickListener {
-                selectAnswer(quiz_start_option_four)
+            binding.quizStartOptionFour.setOnClickListener {
+                selectAnswer(binding.quizStartOptionFour)
             }
 
-            quiz_start_next_btn.setOnClickListener {
+            binding.quizStartNextBtn.setOnClickListener {
                 questionUiVisibility(false)
                 viewModel.loadNextQuestion()
             }
@@ -228,13 +229,13 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
     }
 
     private fun detachButtonListeners() {
-        quiz_start_option_one.setOnClickListener { }
+        binding.quizStartOptionOne.setOnClickListener { }
 
-        quiz_start_option_two.setOnClickListener { }
+        binding.quizStartOptionTwo.setOnClickListener { }
 
-        quiz_start_option_three.setOnClickListener { }
+        binding.quizStartOptionThree.setOnClickListener { }
 
-        quiz_start_option_four.setOnClickListener { }
+        binding.quizStartOptionFour.setOnClickListener { }
 
     }
 
@@ -303,7 +304,7 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
 
 
     private fun stopTimer() {
-        countdownTimer?.cancel()
+        countdownTimer.cancel()
         currentMillis = 0
     }
 
@@ -313,10 +314,10 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
 
 
     fun resumeTimer() {
-        if (currentMillis > 0) {
+        //if (currentMillis > 0) {
 //            startTimer(currentMillis)
 
-        }
+//        }
     }
 
 
@@ -325,15 +326,15 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
 
         question?.let {
 
-            quiz_start_question.text = it.question
-            quiz_start_question_number.text = (viewModel.findCurrentQuestionIndex() + 1).toString()
+            binding.quizStartQuestion.text = it.question
+            binding.quizStartQuestionNumber.text = (viewModel.findCurrentQuestionIndex() + 1).toString()
 
-            quiz_start_option_one.text = it.option_a
-            quiz_start_option_two.text = it.option_b
-            quiz_start_option_three.text = it.option_c
-            quiz_start_option_four.text = it.option_d
+            binding.quizStartOptionOne.text = it.option_a
+            binding.quizStartOptionTwo.text = it.option_b
+            binding.quizStartOptionThree.text = it.option_c
+            binding.quizStartOptionFour.text = it.option_d
 
-            quiz_start_question_time.text = it.timer.toString()
+            binding.quizStartQuestionTime.text = it.timer.toString()
 
             questionUiVisibility(true)
             startTimer(question)
@@ -342,78 +343,82 @@ class QuizStartFragment : BaseFragment(R.layout.fragment_quiz_start) {
 
     private fun markRightAnswer(rightAnswer: String) {
         when (rightAnswer) {
-            quiz_start_option_one.text -> {
-                quiz_start_option_one.background =
+            binding.quizStartOptionOne.text -> {
+                binding.quizStartOptionOne.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.mark_answer_btn_bg, null)
             }
-            quiz_start_option_two.text -> {
-                quiz_start_option_two.background =
+            binding.quizStartOptionTwo.text -> {
+                binding.quizStartOptionTwo.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.mark_answer_btn_bg, null)
             }
-            quiz_start_option_three.text -> {
-                quiz_start_option_three.background =
+            binding.quizStartOptionThree.text -> {
+                binding.quizStartOptionThree.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.mark_answer_btn_bg, null)
             }
-            quiz_start_option_four.text -> {
-                quiz_start_option_four.background =
+            binding.quizStartOptionFour.text -> {
+                binding.quizStartOptionFour.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.mark_answer_btn_bg, null)
             }
         }
     }
 
     private fun showNextBtn(value: Boolean = true) {
-        quiz_start_next_btn.visibleOrGone(value)
+        binding.quizStartNextBtn.visibleOrGone(value)
     }
 
     private fun setQuizData(quiz: Quiz) {
-        quiz_start_title.text = quiz.name
+        binding.quizStartTitle.text = quiz.name
     }
 
     private fun setProgressBar(value: Int) {
-        quiz_start_question_progress.progress = value
+        binding.quizStartQuestionProgress.progress = value
     }
 
     private fun showQuizCompleteBtn(value: Boolean) {
-        quiz_start_result_btn.visibleOrGone(value)
-        quiz_start_restart_btn.visibleOrGone(value)
+        binding.quizStartResultBtn.visibleOrGone(value)
+        binding.quizStartRestartBtn.visibleOrGone(value)
     }
 
     private fun setTimeOut(value: Long) {
-        quiz_start_question_time.text = value.toString()
+        binding.quizStartQuestionTime.text = value.toString()
     }
 
     private fun questionUiVisibility(show: Boolean = false) {
 
-        quiz_start_question_number.visibleOrInvisible(show)
+        binding.quizStartQuestionNumber.visibleOrInvisible(show)
 
-        quiz_start_question.visibleOrInvisible(show)
-        quiz_start_option_one.visibleOrInvisible(show)
-        quiz_start_option_two.visibleOrInvisible(show)
-        quiz_start_option_three.visibleOrInvisible(show)
-        quiz_start_option_four.visibleOrInvisible(show)
-        quiz_start_question_time.visibleOrInvisible(show)
-        quiz_start_question_progress.visibleOrInvisible(show)
-
-
+        binding.quizStartQuestion.visibleOrInvisible(show)
+        binding.quizStartOptionOne.visibleOrInvisible(show)
+        binding.quizStartOptionTwo.visibleOrInvisible(show)
+        binding.quizStartOptionThree.visibleOrInvisible(show)
+        binding.quizStartOptionFour.visibleOrInvisible(show)
+        binding.quizStartQuestionTime.visibleOrInvisible(show)
+        binding.quizStartQuestionProgress.visibleOrInvisible(show)
 
 
-        quiz_start_option_one.background =
+
+
+        binding.quizStartOptionOne.background =
             ResourcesCompat.getDrawable(resources, R.drawable.outline_light_btn_bg, null)
-        quiz_start_option_two.background =
+        binding.quizStartOptionTwo.background =
             ResourcesCompat.getDrawable(resources, R.drawable.outline_light_btn_bg, null)
-        quiz_start_option_three.background =
+        binding.quizStartOptionThree.background =
             ResourcesCompat.getDrawable(resources, R.drawable.outline_light_btn_bg, null)
-        quiz_start_option_four.background =
+        binding.quizStartOptionFour.background =
             ResourcesCompat.getDrawable(resources, R.drawable.outline_light_btn_bg, null)
 
 
 
 
         context?.let {
-            quiz_start_option_one.setTextColor(ContextCompat.getColor(it, R.color.colorLightText))
-            quiz_start_option_two.setTextColor(ContextCompat.getColor(it, R.color.colorLightText))
-            quiz_start_option_three.setTextColor(ContextCompat.getColor(it, R.color.colorLightText))
-            quiz_start_option_four.setTextColor(ContextCompat.getColor(it, R.color.colorLightText))
+            binding.quizStartOptionOne.setTextColor(ContextCompat.getColor(it,
+                R.color.colorLightText))
+            binding.quizStartOptionTwo.setTextColor(ContextCompat.getColor(it,
+                R.color.colorLightText))
+            binding.quizStartOptionThree.setTextColor(ContextCompat.getColor(it,
+                R.color.colorLightText))
+            binding.quizStartOptionFour.setTextColor(ContextCompat.getColor(it,
+                R.color.colorLightText))
 
 
         }

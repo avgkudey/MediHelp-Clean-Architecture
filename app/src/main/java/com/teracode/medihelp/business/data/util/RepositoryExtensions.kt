@@ -32,7 +32,7 @@ suspend fun <T> safeApiCall(
             }
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
-            Log.d("syncNetworkDru", "ApiResult: ${throwable}")
+            Log.d("syncNetworkDru", "ApiResult: $throwable")
             when (throwable) {
                 is TimeoutCancellationException -> {
                     val code = 408 // timeout error code

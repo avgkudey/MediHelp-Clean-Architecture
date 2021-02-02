@@ -16,9 +16,9 @@ class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration
         outRect.right = space
         outRect.bottom = space
         if (parent.getChildLayoutPosition(view) == 0) {
-            outRect.top = space;
+            outRect.top = space
         } else {
-            outRect.top = 0;
+            outRect.top = 0
         }
 
     }
